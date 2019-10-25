@@ -60,5 +60,4 @@ app.use(router.routes());
 app.listen(3000, () => {
   console.log("server is running");
 });
-
 ```
