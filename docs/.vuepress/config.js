@@ -1,5 +1,5 @@
 module.exports = {
-  title: "",
+  title: "白茶清欢无别事,我在等风也等你",
   description: "彭云飞的 Blog 维基百科", // meta 中的描述文字，意义不大，SEO用
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
@@ -10,7 +10,7 @@ module.exports = {
   ],
   base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
-    // lineNumbers: true // 代码块显示行号
+    lineNumbers: true // 代码块显示行号
   },
 
   // 顶部导航栏
@@ -47,9 +47,7 @@ module.exports = {
             // ['','']=>[路径,标题]
             // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
             // 不以 '/' 结尾的就是指向.md文件
-            ["/FAQ/Node/Digested", "消化过"],
-            ["/FAQ/Node/Digesting", "消化中"],
-            ["/FAQ/Node/DigestWill", "待消化"]
+            ["/FAQ/Node/Koa", "Koa"],
           ]
         },
         {
@@ -60,8 +58,8 @@ module.exports = {
           ]
         },
         {
-          title:"Vue系列",
-          children:[
+          title: "Vue系列",
+          children: [
             ["/FAQ/Vue/A001", "#A001_Vue"],
             ["/FAQ/Vue/A002", "#A002_Vue"]
           ]
