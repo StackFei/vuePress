@@ -1,15 +1,15 @@
-## 尝试实现一个简易Koa
+# 尝试实现一个简易Koa
 
 ::: tip
 Koa 一个比Express更轻量的基于 Nodejs 编写的Web服务器
 :::
 
-### 结构分析
+## 结构分析
 当然，今天不是讨论`Koa`是什么或者怎么用，默认再座的各位看官，都是熟练操作`Koa`进行开发，即使不会 `koa` 会 `Express`也是一样的原理，看懂的看个门道，看不懂得看个热闹。作者也是看过很多文章总结下来的，如有瑕疵，请多见谅。
 
 看过`Koa`源码的都知道，内容不多，一共就四个文件夹。`application`,`context`,`response`,`request`,分别对应的是`Koa`实例，上下文，服务端响应，客户端响应，了解了他的结构，再结合日常的使用方法，复原功能变得清晰明了。
 
-### 构建项目
+## 构建项目
 ```javascript
 mkdir myKoa
 cd myKoa
@@ -21,7 +21,7 @@ touch application.js
 ...
 ```
 
-### 基本用法
+## 基本用法
 以上操作一气呵成，回顾一下Koa的基本用法
 ```javascript
 const myKoa = require('./lib/application')
@@ -36,7 +36,7 @@ app.listen(() => {
 })
 ```
 
-### Koa雏形
+## Koa雏形
 
 ::: tip
 今天的范畴全在`application`,毕竟所有的方法都是基于它扩展。
@@ -99,7 +99,7 @@ class myKoa extends EventEmit{
     
     ...
 ```
-### compose核心步骤
+## compose核心步骤
 - 从中间件数组末尾开始迭代
 - 取出最后一项
 - 赋值操作 将第一步的`next`的`Promise`接入到第二部的赋值`let next = Promise.resolve();`,`next = createNext(currentNextMiddleware,next)`
@@ -125,6 +125,6 @@ class myKoa extends EventEmit{
         })
     }
 ```
-### 洋葱模型核心思路
+## 洋葱模型核心思路
 ![koa执行机制](../../.vuepress/public/Node/img/koa1.png)
 以上便是个人学习的拙见

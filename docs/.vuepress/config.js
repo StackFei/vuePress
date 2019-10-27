@@ -8,7 +8,7 @@ module.exports = {
     // 即 docs/.vuepress/public/img/geass-bg.ico
     ["link", { rel: "icon", href: "/img/geass-bg.ico" }]
   ],
-  base: "/StackFei/", // 这是部署到github相关的配置
+  // base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
     lineNumbers: true // 代码块显示行号
   },
@@ -48,6 +48,17 @@ module.exports = {
             // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
             // 不以 '/' 结尾的就是指向.md文件
             ["/FAQ/Node/Koa", "Koa"],
+          ]
+        },
+        {
+          // 菜单名
+          title: "Css系列",
+          // 子菜单
+          children: [
+            // ['','']=>[路径,标题]
+            // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
+            // 不以 '/' 结尾的就是指向.md文件
+            ["/FAQ/Css/css", "🍌Css"],
           ]
         },
         {
