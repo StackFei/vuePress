@@ -64,14 +64,12 @@ module.exports = {
         {
           title: "React系列",
           children: [
-            ["/FAQ/React/A001", "#A001_React"],
-            ["/FAQ/React/A002", "#A002_React"]
+            ["/FAQ/React/VirtualDom", "VirtualDom"],
           ]
         },
         {
           title: "Vue系列",
           children: [
-            ["/FAQ/Vue/A001", "#A001_Vue"],
             ["/FAQ/Vue/A002", "#A002_Vue"]
           ]
         }
