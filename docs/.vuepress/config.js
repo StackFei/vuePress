@@ -47,7 +47,7 @@ module.exports = {
             // ['','']=>[路径,标题]
             // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
             // 不以 '/' 结尾的就是指向.md文件
-            ["/FAQ/Node/Koa", "🍆初级Koa"],
+            ["/FAQ/Node/Koa", "🍊初级Koa"],
           ]
         },
         {
@@ -65,7 +65,9 @@ module.exports = {
           title: "React系列",
           children: [
             ["/FAQ/React/VirtualDom", "🌰VirtualDom"],
-            ["/FAQ/React/Hooks", "🍊初级Hooks"],
+            ["/FAQ/React/Hooks1", "🍊初级Hooks"],
+            ["/FAQ/React/Hooks2", "🍉中级Hooks"],
+            ["/FAQ/React/Hooks3", "🍐高级Hooks"],
           ]
         },
         {

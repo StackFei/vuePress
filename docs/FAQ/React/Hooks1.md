@@ -1,8 +1,8 @@
 # 尝鲜React新特性Hooks
 
-::: tip
-`React` v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本被正式发布。`React hook` 在 `React` 中只是对 `React hook` 的概念性的描述，在开发中我们用到的实际功能都应该叫做 `React hook`。
-:::
+
+>`React` v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本被正式发布。`React hook` 在 `React` 中只是对 `React hook` 的概念性的描述，在开发中我们用到的实际功能都应该叫做 `React hook`。
+
 
 ## 前言 
 `React hook` 一经发行，收到广大程序员的拥戴。得益于 `React hook` 的函数式编程，写法相对于老式的类组件编程产出的代码量少了量的变化，但也并不是绝对的完美，老项目的代码量可不是一朝一夕能被清理掉的，况且还得兼容以前所有的逻辑。所以，迭代咱不考虑，但尝鲜也是足够的。这并不影响大家拥抱新技术。
@@ -72,7 +72,7 @@ import React , {useState, useEffect, useCallback} from 'react'
 import { message } from 'antd'
 const App = () => {
     const [count , setCount] = useState(0);
-    const [count1 , setCount1] = useState(1);
+    const [count1 , setCount1] = useState(0);
     const calculateCount = useCallback(() => {
     if (count1 && count2) {
         return count * count1;
@@ -96,6 +96,56 @@ const App = () => {
 ![hooks钩子函数](../../.vuepress/public/React/img/hooks2.gif)
 
 ### useRef
-`useRef` 有点类似于 类组件中的 `createRef` 接收一个初始值，返回一个对象通过current获取到当前对象，并保存当前状态
+`useRef` 有点类似于 类组件中的 `createRef` 接收一个初始值，返回一个对象通过current获取到当前对象，并保存节点当前状态,且保存的变量不会随着数据的变化而重新生成，保持最后一次赋值状态。其功能配合上 `useCabllback`, `useEffect`,完美实现 `preProps/preState` 的功能。
+```javascript
+const [count, changeCount] = useState(0);
+const [count1, changeCount1] = useState(0);
+// 创建初始值为空对象的prestate
+const preState = useRef({});
+// 依赖preState进行判断时可以先判断，最后保存最新的state数据
+useEffect(() => {
+  const { ... } = preState.current;
+  if (// 条件判断) {
+    // 逻辑
+  }
+  // 保存最新的state
+  preState.current = {
+    count,
+    count1,
+  }
+});
+```
+![hooks钩子函数](../../.vuepress/public/React/img/hooks3.gif)
 
-https://juejin.im/post/5d754dbde51d4561cd2466bf
+### useMemo
+Memo 为 Memory 简写，`useMemo` 即使用记忆的内容。主要用于优化性能这块。就像前面所说 `useEffect` 没有设置第二个参数关联状态，每次都会触发。同样通过计算出来的值或者组件状态也都会重新计算/挂载，即使状态并没有发生改变。
+在日常业务中， `useMemo` 可以用来缓存计算的值或组件，避免重复计算或者挂载带来不必要的性能浪费。
+```javascript
+import React, { useState, useMemo } from 'react';
+import { message } from 'antd';
+
+export default function HookDemo() {
+  const [count1, changeCount1] = useState(0);
+  const [count2, changeCount2] = useState(10);
+
+  const calculateCount = useMemo(() => {
+    message.info('重新生成计算结果');
+    return count1 * 10;
+  }, [count1]);
+  return (
+    <div>
+      {calculateCount}
+      <button onClick={() => { changeCount1(count1 + 1); }}>改变count1</button>
+      <button onClick={() => { changeCount2(count2 + 1); }}>改变count2</button>
+    </div>
+  );
+}
+```
+参数与 `useEffect` 等钩子函数无差别
+
+![hooks钩子函数](../../.vuepress/public/React/img/hooks4.gif)
+
+初次了解可能只会觉得 `useMemo` 用来做计算缓存，返回值无非是数字类型或者字符串类型。其实，并不关心返回值类型，`useMemo` 内部只接受状态值，依据状态值返回另一个状态。简称 `雨我无瓜`。今天就先讲到这，下节再继续。
+
+### 参考
+[看完这篇，你也能把 React Hooks 玩出花](https://juejin.im/post/5d754dbde51d4561cd2466bf)
