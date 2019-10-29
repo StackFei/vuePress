@@ -15,7 +15,7 @@ module.exports = {
 
   // 顶部导航栏
   themeConfig: {
-    sidebarDepth: 2, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
+    sidebarDepth: 4, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
     lastUpdated: "最后更新时间", // 文档更新时间：每个文件git最后提交的时间,
     // 顶部导航栏
     nav: [
@@ -65,6 +65,7 @@ module.exports = {
           title: "React系列",
           children: [
             ["/FAQ/React/VirtualDom", "VirtualDom"],
+            ["/FAQ/React/Hooks", "初级Hooks"],
           ]
         },
         {
