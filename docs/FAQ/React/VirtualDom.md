@@ -1,4 +1,4 @@
-# 尝试VirtualDom
+# 尝试还原VirtualDom
 
 ::: tip
 高仿`React`的虚拟dom,外加冒牌的`diff`算法
