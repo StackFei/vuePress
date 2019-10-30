@@ -73,7 +73,7 @@ module.exports = {
         {
           title: "Vue系列",
           children: [
-            ["/FAQ/Vue/A002", "#A002_Vue"]
+            ["/FAQ/Vue/Cli", "🔨vue-cli"]
           ]
         }
       ],
