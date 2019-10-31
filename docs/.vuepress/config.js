@@ -68,12 +68,19 @@ module.exports = {
             ["/FAQ/React/Hooks1", "🍊初级Hooks"],
             ["/FAQ/React/Hooks2", "🍉中级Hooks"],
             ["/FAQ/React/Hooks3", "🍐高级Hooks"],
+            ["/FAQ/React/WeChat", "🤡React系列小程序"],
           ]
         },
         {
           title: "Vue系列",
           children: [
             ["/FAQ/Vue/Cli", "🔨vue-cli"]
+          ]
+        },
+        {
+          title: "工作系列",
+          children: [
+            ["/FAQ/Work/Work1", "👷前端请求的正确打开方式"]
           ]
         }
       ],
