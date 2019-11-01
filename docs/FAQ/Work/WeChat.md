@@ -144,9 +144,6 @@ export default Index;
 ```
 这种`@connect`装饰器的写法，相信接触过`ES6`语法都得他比较熟悉，其实内部也只是一个高阶函数的写法，通过迭代器来运行。第一个参数接收一个函数，返回需要操作的数据，第二个参数也是接收一个函数，已`dispatch`作为参数，并且通过`dispatch`派发需要执行的动作函数。一气呵成。
 
-操作计数器图片还未配
-<!-- ![react虚拟dom](../../.vuepress/public/React/img/react1.png) -->
-
 ### 使用方法二
 类组件的写法，代码臃肿繁重是一个不得不接受的事实，所有`hooks`就来拯救强迫症了，`redux`都搬过来了，`hooks`当然也不会例外咯。当然还内置了一套自己封装的钩子，尤其内置了比`redux`更加好用的钩子函数`useSelector`等等等。先了解下基本操作.
 ```javascript
@@ -165,13 +162,32 @@ function (){
 ```
 这写法，这操作，是`React`没错了，还有更劲爆的，状态数据处理钩子
 ```javascript
+//index
 import { useSelector } from '@tarojs/redux'
 const persistReducer = useSelector(state => state.persistReducer)
+
+//persistReducer
+const initState = {
+  areas: {},
+}
+export default function reducer(state = initState, action) {
+  switch (action.type) {
+    case `${API_GET_AREAS}_FULFILLED`:
+      return {
+        ...state,
+        areas: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
 ```
 只需要配上这两句，一切的问题都搞定，当然你得写好`persistReducer`中的网络请求，然后就可以从中结构出自己需要的数据，简直就是神器。
 
 ### 槽点
 所谓有利便有弊，接下来罗列开发中遇到的槽点
+
 ---
 封装组件不接收restProps
 ```javascript
@@ -197,10 +213,65 @@ function ({App}){
 ```
 
 无法通过`className`修改样式不接受传参
+
 ---
+
 内置`eslint`强校验报错 即使语法没出错
 ....
+
 ---
 总之，槽点多到你无法想象。所以就开始迁移到`reMax`了。
 
 ## 尝鲜阿里reMax
+这款相对而言，就比较柔和，配置文件，写法用法也都和`taro`差不太多，但也有些许不同。比如个别配置文件.
+```javascript
+// 初始化 taro init myApp
+── myApp
+   ├── config   // 配置文件
+   ├── node_module // 依赖资源
+   ├── src
+   |    ├── actions  
+   |    └── pages  
+   |        └── Index  
+   |            ├── index.config.js 
+   |            └── index.js    
+   |    ├── reducers  
+   |    ├── store  
+   |    └── app.js   
+   ├── ...   
+   └── package.json 
+```
+### 配置项
+没错多了一个配置文件，`index.config.js`,怪文件是配置每个页面的`header`显示的`title`，在`taro`是不需要的，但在`reMax`,必须得跟上，而且是每个页面都得单独配，这也是比价恶心的地方之一，其次他的引入方式与`taro`也有些许不同，分为两套分别引入`wechat`,`alipay`，加上字节跳动。
+```javascript
+//index.config.js
+module.exports = {
+  navigationBarTitleText: 'xxx',
+}
+
+// 单页面组件引入方式
+import { View, Text, Image, ... } from 'remax/wechat'
+import { View, Text, Image, ... } from 'remax/alipay'
+```
+
+### 数据管理
+总体来说，配置项都是那一套`Redux`的那一套流程，更巧的是，居然提供了一套和`taro`一毛一样的`useSelector`，我都怀疑是一家人了，果然好用的大家都在用。
+
+### 槽点
+就目前小编的认知，除了分享页面存在一些`BUG`,无法阻止默认事件，其他的还暂未发现。
+
+### 总结
+补充说明的是，`taro`,`remax`都拥有小程序原生的api方法，比如路由跳转，各类授权api，以及组件方法。都是可以直接调用的。
+```javascript
+// remax
+import {View, Button, Text, navigateTo, useShareAppMessage, hideShareMenu}  from 'remax/wechat'
+
+import Taro from '@tarojs/taro'
+import { View, Button, Text } from '@tarojs/components'
+const App = () => {
+    return(<View onClick={() => Taro.navigateTo({url:"xxxxx"})}>
+        跳转
+    </View>)
+}
+```
+一个是所有的Api以及组件都是直接结构出来，一个是分开挂载分开去取，总之是换汤不换药。还有很多好用没有罗列出来的功能或者写法以及各种写法上的奇淫技巧就得自己去尝试了，总之但是作为过来人，如果不讲究开发速率还是原生的小程序写法好用，没有那么多编译规则。如果是讲究开发效率，还是觉得`remax`好用一点，当然这只是针对`React`技术栈的人。不然咱为啥会迁以框架，别说了。搬组件去了。
