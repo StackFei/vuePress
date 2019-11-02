@@ -226,23 +226,23 @@ function ({App}){
 这款相对而言，就比较柔和，配置文件，写法用法也都和`taro`差不太多，但也有些许不同。比如个别配置文件.
 ```javascript
 // 初始化 taro init myApp
-── myApp
-   ├── config   // 配置文件
-   ├── node_module // 依赖资源
-   ├── src
-   |    ├── actions  
-   |    └── pages  
-   |        └── Index  
-   |            ├── index.config.js 
-   |            └── index.js    
-   |    ├── reducers  
-   |    ├── store  
-   |    └── app.js   
-   ├── ...   
-   └── package.json 
+my-app/
+┳ package.json
+┣ dist/
+┣ node_modules/
+┣ src/
+┗━┓ app.js
+  ┣ app.css
+  ┣ app.config.js
+  ┣ pages/
+  ┗━┓ index/
+    ┗━┓
+      ┣ index.js
+      ┣ index.module.css
+      ┣ index.config.js
 ```
 ### 配置项
-没错多了一个配置文件，`index.config.js`,怪文件是配置每个页面的`header`显示的`title`，在`taro`是不需要的，但在`reMax`,必须得跟上，而且是每个页面都得单独配，这也是比价恶心的地方之一，其次他的引入方式与`taro`也有些许不同，分为两套分别引入`wechat`,`alipay`，加上字节跳动。
+没错多了一个配置文件，`*.config.js`,怪文件是配置每个页面的`header`显示的`title`，在`taro`是不需要的，但在`reMax`,必须得跟上，而且是每个页面都得单独配，这也是比价恶心的地方之一，其次他的引入方式与`taro`也有些许不同，分为两套分别引入`wechat`,`alipay`，加上字节跳动。
 ```javascript
 //index.config.js
 module.exports = {
