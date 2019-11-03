@@ -81,6 +81,7 @@ module.exports = {
           children: [
             ["/FAQ/Work/Work1", "👷前端请求的正确打开方式"],
             ["/FAQ/Work/WeChat", "🤡踩坑React系列小程序"],
+            ["/FAQ/Work/AOP", "🗡AOP面向切片编程"],
           ]
         }
       ],
