@@ -1,5 +1,5 @@
 module.exports = {
-  title: "白茶清欢无别事,我在等风也等你",
+  title: "守夜人笔记",
   description: "彭云飞的 Blog 维基百科", // meta 中的描述文字，意义不大，SEO用
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
@@ -82,6 +82,7 @@ module.exports = {
             ["/FAQ/Work/Work1", "👷前端请求的正确打开方式"],
             ["/FAQ/Work/WeChat", "🤡踩坑React系列小程序"],
             ["/FAQ/Work/AOP", "🗡AOP面向切片编程"],
+            ["/FAQ/Work/TSC", "🛬TypeScript"],
           ]
         }
       ],
