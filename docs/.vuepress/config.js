@@ -1,6 +1,44 @@
 module.exports = {
   title: "守夜人笔记",
   description: "彭云飞的 Blog 维基百科", // meta 中的描述文字，意义不大，SEO用
+  // plugins: ['@vuepress/back-to-top', '@vuepress/medium-zoom'],
+  plugins: [
+    ['@vuepress/back-to-top', true],
+    ['@vuepress/medium-zoom', {
+      selector: 'img',
+      // See: https://github.com/francoischalifour/medium-zoom#options
+      options: {
+        margin: 16
+      }
+    }],
+    // see: https://vssue.js.org/guide/vuepress.html#usage
+    ['@vssue/vuepress-plugin-vssue', {
+      // set `platform` rather than `api`
+      platform: 'github',
+      // all other options of Vssue are allowed
+      owner: 'realpdai',
+      repo: 'tech-arch-doc-comments',
+      clientId: 'xxxxxxxxxxx',
+      clientSecret: 'xxxxxxxxxxxxxxxxxxxxxx',
+    }],
+    // see: https://vuepress.github.io/zh/plugins/copyright/#%E5%AE%89%E8%A3%85
+    ['copyright', {
+      noCopy: false, // 允许复制内容
+      minLength: 100, // 如果长度超过 100 个字符
+      authorName: "https://www.pdai.tech",
+      // clipboardComponent: "请注明文章出处, [Java 全栈知识体系](https://www.pdai.tech)"
+    }],
+    // see: https://github.com/ekoeryanto/vuepress-plugin-sitemap
+    ['sitemap', {
+      hostname: 'https://www.pdai.tech'
+    }],
+    // see: https://github.com/IOriens/vuepress-plugin-baidu-autopush
+    ['vuepress-plugin-baidu-autopush', {
+
+    }],
+    // see: https://github.com/znicholasbrown/vuepress-plugin-code-copy
+    [['vuepress-plugin-code-copy', true]]
+  ],
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
     // 增加一个自定义的 favicon(网页标签的图标)
@@ -10,13 +48,13 @@ module.exports = {
   ],
   // base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
-    lineNumbers: true // 代码块显示行号
+    // lineNumbers: true // 代码块显示行号
   },
-
   // 顶部导航栏
   themeConfig: {
     sidebarDepth: 5, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
     lastUpdated: "最后更新时间", // 文档更新时间：每个文件git最后提交的时间,
+    smoothScroll: true, //页面滚动效果。
     // 顶部导航栏
     nav: [
       // 单项 text：显示文字，link：指向链接
