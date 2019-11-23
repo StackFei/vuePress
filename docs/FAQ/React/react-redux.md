@@ -245,13 +245,153 @@ export default combineReducer(reducers){
 |<Badge text="bindActionCreator"/>  |    合并所有派发函数  |        🚀       |
 
 ## react-redux
-<Badge text="火热剖析中......"/>
+>前文已经将`redux`手写了个遍, 接下来该轮到他的懒人依赖包了, `react-redux` 全家桶了. 老规矩, 个人学习记录, 不喜勿喷.
+### 出现缘由
+既然`redux`已经将状态逻辑分离, 那为什么还会出现管理这些逻辑容器的插件, 小编个人感觉是<Badge text="懒"/> 不想写多余的代码, 能少写就少写, 就促使一些奇淫技巧的诞生, 其实过分的抽离也未必是一件好事, 不多扯, 接着来分析`redux`不够完善的地方.***每个页面都需要用到`store`导致引用泛滥***, ***每次派发都需要手动引入触发订阅, 说到底就是<Badge type="warn" text="懒"/>***, 先看未使用前的效果图.
+```javascript
+// 手动触发订阅
+function increment(payload){
+    return { type: type.INCREMENT2,payload }
+}
+function increment(payload){
+    return { type: type.DECREMENT2 ,payload}
+}
+let actions = {
+    incerment,decerment
+}
+state = { number: store.getState().counter2.number }
+componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+        this.setState({ number: store.getState().counter2.number })
+    })
+}
+componentWillUnmount() {
+    this.unsubscribe()
+}
+// 手动连接
+<button onClick={()=>actions.increment(6)}>加1</button>
+<button onClick={()=>actions.decrement(6)}>减1</button>
+```
+现将使用到的目录列出来, 方便理解 <Badge text="结构" />
+```javascript
+── react-redux
+   ├── index     // 入口
+   ├── Provider  // 根组件,包裹传入store消费
+   ├── Context   // 上下文 <老套路取上下值> 
+   └── connect   //连接组件之间的状态以及动作 
+```
+### react-redux组件1 <Badge text="Provider" />
+先来解决第一个问题, `store`引用泛滥的问题, 说道理就是没有全局共享, 导致每个组件要使用就得引用一遍, 方法就是使用`react`的常见手法, 在根组件传入`store`, 在通过上下文直接取, 或许是个不错的解决方案, 分析一下需求, 只需要传入上下文的`props` 组件直接往后丢就行, 没什么难度操作, 看结果.
+```javascript
+// MyContext -> React,createContext()
+class Provider extends React.Component{
+    render(){
+        return (
+            <MyContext.Provider value={store:this.props.store}>
+                {this.props.children}
+            </MyContext.Provider>
+        )
+    }
+}
+```
+为了便于区分这里将上下文对象重新命名了一下`MyContext`, 可以看出基本上就是进来啥出去啥, 顺便在上下文对象放置属性,以供全局可以使用.总的来说简答.
+
+### react-redux组件2 <Badge text="connect" />
+既然创建消费的组件也就搞定, 那接下来就得消费了, 连接状态以及动作, 先看一下官方的用法在研究
+```javascript
+let mapStateToProps = state => state.xxx
+let mapStateToProps = dispatch =>({
+    xxx(){
+        dispatch({})
+    },
+    yyy(){
+        dispatch({})
+    },
+}) 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Components)
+```
+用法还是比较简单直观的, 经过这样派发一次就会把整个`store`赋值到`props`上，可以直接取用`mapStateToProps`就是所谓的全局状态, 在通过`.`语法来取你所需要的状态值,`mapStateToProps`很明显就是所有的动作对象, 虽然这样全都写在一个位置很尴尬, 也会导致整个文件越来越臃肿, 先这样写着, 后面在优化, 思路还是比较明确的, 一个自执行函数, 返回一个函数.咱们来一步一步拆解.
+ - 先整理出大致框架, 一句话吃啥吐啥.
+```javascript
+// MyContext -> React,createContext()
+export default function(mapStateToProps, mapDispatchToProps){
+    return function(WrappedComponent){
+        return class extends React.Component{
+            render(){
+                return(<WrappedComponent />)
+            }
+        }
+    }
+}
+// connect(xxx,yyy)(Component)
+```
+ - 在处理传入值以及上下文, 需要注意上下文需要用`contextType`来包裹, 在将`mapStateToProps`中的值取出丢到嵌套的组件内, 其余的一律不管.
+ ```javascript
+...
+static contextType = MyContext
+constructor(props,context){
+    super(props)
+    this.state = mapStateToProps(context.store.getState())
+}
+render(){
+    return(<WrappedComponent {...this.state} />)
+}
+```
+ - 重点就是这个派发动作的订阅, 就是之前写到的派发动作是自动订阅, 不至于手动刷新视图, 老规矩订阅状态, 并且返回取消订阅.
+ ```javascript
+componentsDidMount(){
+    this.unscribe = this.context.store.subscribe(()=>{
+        this.setState(mapStateToProps(this.context.store.getState()))
+    })
+}
+componentWillUnmount(){
+    this.unscribe()
+}
+```
 
 
+ - 在处理派发动作, 一样将动作丢到嵌套的组件, 简单处理 ***<这里预留一个坑位, 稍后补上>***
+```javascript
+constructor(props,context){
+    super(props)
+    this.state = mapStateToProps(context.store.getState())
+    this.actions = mapDispatchToProps(mapDispatchToProps,context.store.dispatch)
+}
+render(){
+    return(<WrappedComponent {...this.state} {...this.actions}/>)
+}
+```
 
+### react-redux完善
+现在已经可以使用该函数了, 可以说是和`react`其他库完全兼容, 接下来属于容错处理, 还记得之前埋下的坑么, `mapDispatchToProps` 这个函数有点恶心, 没=每写一个动作, 就要在函数里面写个派发, 久而久之, 就会变得难以维护, 
+我们期望这个类型`combineReducer`一样, 能将所有的`action`合并, 既然操作类型, 那原理也查不到哪去, 先看下期望
+```javascript
+actions = {xxxx(),yyyy()}
+connect(
+    mapStateToProps,
+    actions
+)(Component)
+```
+只需要判断类型只有单个的话, 就直接调用, 对象类型的话也可以使用之前封装好的合并`actions`的函数来合并, 最后别忘了也要把`props`丢下去.
 
-
-
+```javascript
+constructor(props, context) {
+    super(props)
+    this.state = mapStateToProps(context.store.getState())
+    if (typeof mapDispatchToProps === 'function') {
+        this.actions = mapDispatchToProps(context.store.dispatch);
+    } else if (typeof mapDispatchToProps === 'object') {
+        this.actions = bindActionCreators(mapDispatchToProps, context.store.dispatch);
+    }
+}
+render() {
+    return (<WrappedComponent {...this.props} {...this.state} {...this.actions} />)
+}
+```
+到此为止, 完成了`react`,`react-redux`的剖析学习, 后续会尝试研究各种`react-middleware`,
 <!-- <ClientOnly>
   <HomeLayout/> 
 </ClientOnly> -->
