@@ -247,7 +247,7 @@ export default combineReducer(reducers){
 ## react-redux
 >前文已经将`redux`手写了个遍, 接下来该轮到他的懒人依赖包了, `react-redux` 全家桶了. 老规矩, 个人学习记录, 不喜勿喷.
 ### 出现缘由
-既然`redux`已经将状态逻辑分离, 那为什么还会出现管理这些逻辑容器的插件, 小编个人感觉是<Badge text="懒"/> 不想写多余的代码, 能少写就少写, 就促使一些奇淫技巧的诞生, 其实过分的抽离也未必是一件好事, 不多扯, 接着来分析`redux`不够完善的地方.***每个页面都需要用到`store`导致引用泛滥***, ***每次派发都需要手动引入触发订阅, 说到底就是<Badge type="warn" text="懒"/>***, 先看未使用前的效果图.
+既然`redux`已经将状态逻辑分离, 那为什么还会出现管理这些逻辑容器的插件, 小编个人感觉是<Badge text="懒"/> 不想写多余的代码, 能少写就少写, 就促使一些奇淫技巧的诞生, 其实过分的抽离也未必是一件好事, 不多扯, 接着来分析`redux`不够完善的地方.**每个页面都需要用到`store`导致引用泛滥**, **每次派发都需要手动引入触发订阅, 说到底就是<Badge type="warn" text="懒"/>**, 先看未使用前的效果图.
 ```javascript
 // 手动触发订阅
 function increment(payload){
@@ -365,7 +365,7 @@ render(){
 }
 ```
 
-### react-redux完善
+### react-redux <Badge text="完善" />
 现在已经可以使用该函数了, 可以说是和`react`其他库完全兼容, 接下来属于容错处理, 还记得之前埋下的坑么, `mapDispatchToProps` 这个函数有点恶心, 没=每写一个动作, 就要在函数里面写个派发, 久而久之, 就会变得难以维护, 
 我们期望这个类型`combineReducer`一样, 能将所有的`action`合并, 既然操作类型, 那原理也查不到哪去, 先看下期望
 ```javascript
@@ -391,7 +391,49 @@ render() {
     return (<WrappedComponent {...this.props} {...this.state} {...this.actions} />)
 }
 ```
-到此为止, 完成了`react`,`react-redux`的剖析学习, 后续会尝试研究各种`react-middleware`,
+到此为止, `react-redux`以及完全可以使用了, 剩下要做的就是优化渲染. 接下里就是优化处理, 渲染次数.
+
+### react-redux <Badge text="优化渲染" />
+目前, 基于手写的`react-redux`以及完全可以与官方的`react`全家桶混用, 比较尴尬的地方就是我们没有做渲染优化, 因为`redux`内部设计就存在历史遗留问题, 基于全局的状态分发共享使得任意一个组件派发都会触发全局事件, 尽管状态库是无法操作, 那就在分发时来做一下节流, 先描述一下问题所在.
+|    状态库     | 名称        | 触发动作                                     | 渲染          | 
+|     ----    | -------    | ---------                                   | ------         | 
+|     store   |Counter1    |<Badge text="加" /> or  <Badge text="减" />   | <Badge type="warn" text="Counter1 render" />and<Badge type="warn" text="Counter2 render" />|
+|     store  |Counter2    |<Badge text="加" /> or  <Badge text="减" />   |<Badge type="warn" text="Counter1 render" />and<Badge type="warn" text="Counter2 render" /> |    
+
+先来分析一下为什么会发生多次渲染, 就是因为内部无法判定哪一个状态发生了改变, 那就分为两部曲 
+ - **①先到派发转态的`combineReducer`中做点手脚, 既然没办法判断, 那我就缓存一下前后更改的状态, 你发生改变我就派发改变的, 没发生改变ok我还是返回上一次的.**, 
+```javascript
+function combineReducer(reducers){
+    return function(state = {},action){
+        let hashChange = false;
+        let nextState = {};
+        for(const key in reducers){
+            let reducer = reducers[key]
+            let prevStateForKey = state[key];
+            let nextStateForKey = reducer(prevStateForKey,action)
+            nextState[key] = nextStateForKey
+            hashChange = hashChange || nextStateForKey != prevStateForKey
+        }
+        return hashChange ? nextState : state 
+    }
+}
+```
+也不是很难理解, 用`hashChange`保存是否派发新状态, 用`prevStateForKey` 保存上一次的派发动作, 用`nextStateForKey`保存新传入的派发动作, 只需要做一下简单的比较再来决定是否输出新旧派发动作即可, 派发这块已经ok, 下面就该轮到状态的取舍.
+ - **② 回到连接状态的`connect`中派发状态是做一下拦截, 下一次与上一次状态相同我就派发, 不相同我就不派发**
+```javascript
+this.state = this.mapState = mapStateToProps(context.store.getState())
+componentDidMount(){
+    ...
+    let nextState = mapStateToProps(this.context.store.getState())
+    if(nextState != this.mapState){
+        this.mapState = nextState;
+        this.setState(nextState)
+    }
+}
+```
+这块思路也是和上面的无异, 做一个简单的变量存储, 然后将前后的状态做一下对比, 有一点巨坑**this.mapState = nextState**, 如果前后值不相同的话, 一定要用后来的值覆盖掉之前缓存的值, 不然之后每次都不相同, 永远都是和第一次的值作比较, 导致永远都会派发. 当然也有第二种思路, 在`shouldComponentUpdate`中做处理, 用`nextProps`,`nextState`这两个变量作比较, 纯属抛砖引玉.
+
+地址：<https://github.com/StackFei/ReactFAQ>
 <!-- <ClientOnly>
   <HomeLayout/> 
 </ClientOnly> -->

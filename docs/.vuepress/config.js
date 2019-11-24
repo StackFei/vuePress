@@ -103,7 +103,9 @@ module.exports = {
           title: "React系列",
           children: [
             ["/FAQ/React/VirtualDom", "🌰VirtualDom"],
+            ["/FAQ/React/react-router", "🍑react-router"],
             ["/FAQ/React/react-redux", "🍎react-redux"],
+            ["/FAQ/React/react-redux-middleware", "🍍react-redux-middleware"],
             ["/FAQ/React/Hooks1", "🍊初级Hooks"],
             ["/FAQ/React/Hooks2", "🍉中级Hooks"],
             ["/FAQ/React/Hooks3", "🍐高级Hooks"],
