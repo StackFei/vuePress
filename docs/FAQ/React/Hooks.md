@@ -1,4 +1,4 @@
-# 尝鲜React新特性Hooks
+# Hooks
 
 
 >`React` v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本被正式发布。`React hook` 在 `React` 中只是对 `React hook` 的概念性的描述，在开发中我们用到的实际功能都应该叫做 `React hook`。
@@ -7,7 +7,7 @@
 ## 前言 
 `React hook` 一经发行，收到广大程序员的拥戴。得益于 `React hook` 的函数式编程，写法相对于老式的类组件编程产出的代码量少了量的变化，但也并不是绝对的完美，老项目的代码量可不是一朝一夕能被清理掉的，况且还得兼容以前所有的逻辑。所以，迭代咱不考虑，但尝鲜也是足够的。这并不影响大家拥抱新技术。
 
-## Hooks初始
+## 初识Hooks
 框架都素以钩子函数，来操作整个流程周期，`Hooks`就是整合聚合函数，减少代码量。现在来了解一下官方提供的钩子函数，基本钩子函数最为常见，其他的钩子函数视情况而使用。
 - 基本钩子函数
   - useState
@@ -22,7 +22,7 @@
   - useImperativeHandle
   - useDebugValue
 
-## 基本操作
+### 基本操作
 ### useState
 此方法创建一个新的状态，接收一个固定的参数值，返回一个新的参数值，返回值由一个数组包装，包括返回新的状态值，以及修改状态值的方法，可以使用数组解构将其结构出来。最新版的 `React` 可以使用 `Fragment` 来包裹，避免使用多余的标签。
 ```javascript
@@ -147,5 +147,152 @@ export default function HookDemo() {
 
 初次了解可能只会觉得 `useMemo` 用来做计算缓存，返回值无非是数字类型或者字符串类型。其实，并不关心返回值类型，`useMemo` 内部只接受状态值，依据状态值返回另一个状态。简称 `雨我无瓜`。今天就先讲到这，下节再继续。
 
+
+## 实操Hooks
+
+> 关于 `React hook` 已经有了基本的了解，进入到实战阶段
+
+### 回顾Hooks特性
+`hooks` 称得上是函数式组件吃饭的家伙了，凭借钩子函数来模仿生命周期的流程。靠其简洁的代码量配上高效的性能，可谓是一枝独秀。瞬间占领了类组件的大批江山，受到了广大开发者的青睐。
+既然，已经学会了怎么用这些钩子，那就得用一些高级用法，不然会显得很low，真可谓头可断，发型不能乱。
+
+### 编写自己的Hooks组件 <Badge text="基本类型hooks" />
+最基本的钩子也就是返回包含了更多逻辑的 State 以及改变 State 方法的钩子。拿定时器来说，其最基本的就是返回当前的数字自减等功能，明确完功能后可以开始动手做了。
+```javascript
+import React, { useState, useEffect } from 'react';
+const App = () => {
+    const useTimer = () => {
+        const [running, setRunning] = useState(false);
+        const [time, setTime] = useState(60);
+
+        useEffect(() => {
+            let interval;
+            if (running) {
+                interval = setInterval(() => {
+                    setTime(prev => prev - 1);
+                }, 1000);
+            }
+            return () => {
+                clearInterval(interval);
+            };
+        }, [running]);
+
+        return {
+            // 声明开始计数器方法
+            start: () => {
+                setRunning(true);
+            },
+            // 声明停止计数器方法
+            stop: () => {
+                setRunning(false);
+            },
+            // 声明重置计数器方法
+            reset: () => {
+                setTime(60);
+            },
+            time,
+            running,
+        };
+    };
+    // 使用方法
+    const { start, stop, reset, time, running } = useTimer();
+    <>{!running ? '获取验证码' : time + 's后重发'}</>
+    useEffect(() => {
+        setTimeout(()=>{ start() },1000)
+    })
+    useEffect(() => {
+        if (time === 0) {
+        stop();
+        reset();
+        }
+    }, [time]);
+}
+```
+大功告成；解释一下，先定义属于自己的 `hooks` 函数 `useTimer` 用来计算倒计时，给他默认两属性用来记录开始倒计时、倒计时间，用 `useEffect` 来运行倒计时减少，当然条件是倒计时 `running` 正在运行 ，记得清除倒计时
+的副作用在 `useEffect` 第二个参数，对外暴露，开始 `start`, 结束 `stop`, 重置 `reset` 的方法，用来控制倒计时。用法也极为简单。效果如下，算得上是入门级别的demo
+
+![hooks钩子函数](../../.vuepress/public/React/img/hooks5.gif)
+
+### 编写自己的Hooks组件 <Badge text="基本类型hooks" />
+当然仅仅倒计时并不能满足我们的好奇心，接下来干一个稍微复杂一点的，其实也不能算是复杂，只是将增加、减少、重置结合起来，功能虽增多，却也只是换汤不换药
+```javascript
+import React, { useState } from 'react';
+
+const  useCounter = (initialValue) => {
+  // 接受初始化的值生成state
+  const [count, changeCount] = useState(initialValue);
+  // 声明减少的方法
+  const decrease = () => {
+    changeCount(count - 1);
+  }
+  // 声明增加的方法
+  const increase = () => {
+    changeCount(count + 1);
+  }
+  // 声明重置计数器方法
+  const resetCounter = () => {
+    changeCount(0);
+  }
+  return [count, { decrease, increase, resetCounter }]
+}
+
+export const myHooksView  = () =>{
+  // 在函数组件中使用我们自己编写的hook生成一个计数器，并拿到所有操作方法的对象
+  const [count, controlCount] = useCounter(10);
+  return (
+  	<div>
+    	当前数量：{count}
+			<button onClick={controlCount.decrease}>减少</button>
+			<button onClick={controlCount.increase}>增加</button>
+			<button onClick={controlCount.resetCounter}>重置</button>
+    </div>
+  )
+}
+```
+用法类似，就不做过多介绍。
+
+![hooks钩子函数](../../.vuepress/public/React/img/hooks6.gif)
+
+### 编写自己的Hooks组件 <Badge text="DOM类型hooks" />
+翻完逻辑数值类型的 `hooks` 自定义组件这座山，就见到大海了？ 答案是 `NO` ,可不止是这点功能呢，还能自定义返回DOM节点的钩子函数，没想到吧。借用一下 `antd` 的库来操作以 Modal举例
+```javascript
+import React, { useState } from 'react';
+import { Modal } from 'antd';
+
+const useModal = () => {
+  const [visible, changeVisible] = useState(false);
+
+  const toggleModalVisible = () => {
+    changeVisible(!visible);
+  };
+
+  return [(
+    <Modal
+      visible={visible}
+      onOk={toggleModalVisible}
+      onCancel={toggleModalVisible}
+    >
+      弹窗内容
+  	</Modal>
+  ), toggleModalVisible];
+}
+
+export const HookDemo = () => {
+  const [modal, toggleModal] = useModal();
+  return (
+    <div>
+      {modal}
+      <button onClick={toggleModal}>打开弹窗</button>
+    </div>
+  );
+}
+```
+写法、用法其实和之前的没啥区别，无非就是将值得改变映射到DOM节点上，然后整体返回，符合函数式编程，组件化思路。
+
+![hooks钩子函数](../../.vuepress/public/React/img/hooks7.gif)
+
+## 手搓Hooks
+<Badge text="待更新......" />
+
 ### 参考
-[看完这篇，你也能把 React Hooks 玩出花](https://juejin.im/post/5d754dbde51d4561cd2466bf)
+[实操hooks, 看完这篇，你也能把 React Hooks 玩出花](https://juejin.im/post/5d754dbde51d4561cd2466bf)
