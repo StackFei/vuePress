@@ -52,15 +52,12 @@ function applyMiddleware(...middlewares) {
     return function (createStore) {
         return function (reducer) {
             let store = createStore(reducer)
-            let dispatch;
-            let middlewareAPI = {
+            let middlewareAPI = {                    🚀
                 getState: store.getState,
-                dispatch: (...args) => dispatch(...args) // 返回包装后的dispatch
+                dispatch: store.dispatch
             }
-            // middlewares -> [promise, thunk, logger]中间件
-            // 递归顺序执行logger执行结果 -> thunk执行结果 -> promise执行(返回的dispatch)
-            middlewares = middlewares.map(middleware => middleware(middlewareAPI))
-            dispatch = compose(...middlewares)(store.dispatch)
+            middlewares = middlewares(middlewareAPI) 🚀
+            dispatch = middlewares(store.dispatch)   🚀
             return {
                 ...store,
                 dispatch
@@ -69,17 +66,7 @@ function applyMiddleware(...middlewares) {
     }
 }
 ```
-中间件的核心就是迭代每一个过滤器, 结构还是比较清晰的, 将所有的中间件收入其中, 在传入到通过`createStore`创建的`store`接收, 注意点：**dispatch必须是经过包装过的dispatch不能是初始的dispatch否则中间件就失去了意义**, 难点就是如果将下一次中间件执行的结果跑到下一个中间件接着执行, 这点确实有点难顶, 好在偷偷看了下`react-redux`源码, 将其中的精华偷了点回来.
-```javascript
-function compose(...fns){
-    if(fns.length === 0) return args => args
-    if(fns.length === 1) return fns[0]
-    return fns.reduce((a,b) => (...args) => a(b(...args)))
-}
-```
-这个写法可以说是相当**秀**了, 难度不大, 但就是想不到这个点上, 这点也是做了点兼容问题, 可能传入的中间件不存在, 或是只传入一个, 那就远样抛出即可, `reduce`的作用就不做阐述, 按顺序迭代每一项, 前提是得确保每一项必须得是函数.
-### 封装高可用的logger
-前置工作已经搞定, 后面的工作就简单了, 记住前面一个原则, 所有的中间件都是一个函数, 接收状态返回一个新的函数, 派发都丢到下一个中间件来执行, 这样就很好处理了.
+中间件的核心就是迭代每一个过滤器, 结构还是比较清晰的, 将所有的中间件收入其中, 在传入到通过`createStore`创建的`store`接收, 注意点：**带🚀的部分就是中间件的执行方式**,
 ```javascript
 function logger({ getState, dispatch }){
     return function(next){
@@ -92,8 +79,113 @@ function logger({ getState, dispatch }){
     }
 }
 ```
+目前来说已经是可以使用了, 但是只能是单个单个中间件使用, 类如`let store = applyMiddleware(logger)(createStore)(reducer)`, 其中的`logger`可以随意切换, 但这明显不是我们需要的场景, 我们需要将他们串联起来使用,
 
 ## redux-thunk <Badge text="难度系数🌟🌟" />
+在级联中间件之前, 我们先解决另外一个问题, 在开发中也较为常见, 派发`action`的类型, 一般来说我们的类型操作是这种
+```javascript
+function increment(payload){
+    return {type: INTREMENT, payload}
+}
+```
+大概意思就是派发的函数体中的类型都是为`Object`类型, 这也是为我们的类型判断做了校验, 尽管这样写起来很方便,辨识度高, 但是满足不了我们的开发需求, 举一个简单的🌰, 我需要延迟派发某个动作, 当然如果你非要你咋执行的时候加入延迟(沙雕行为, 重构火葬场), 那咱也没办法.
+```javascript
+function syncIncrement(payload){
+    return function(dispatch,getState){
+        setTimeout(()=> {
+            dispatch({type: INTREMENT, payload})
+        }, 6666) 
+    }
+}
+```
+我们期望的方式是这样来操作, 解释一下, 由于是延迟操作, 为适应中间件的流程, 所以还是老规矩, 用函数返回的方式来派发, 当然现在直接运行, 肯定是回报`期望值是Object`, 所以我们需要中间件来规避这种操作, 遇到这中函数类型的直接执行掉, 不会流入到其他方法. 之前提到过中间件都是同一套流程, 不多废话直接上代码
+```javascript
+function thunk({dispatch,getState}){
+    return function (next){
+        return function(action){
+            if(typeof action === 'function'){
+                return action(getState,dispatch)
+            }
+            next(action)
+        }
+    }
+}
+```
+和`logger`没多大差别, 就是中间层的操作有些许区别, 那就不做过多阐述, 下面有一个更加恶心的操作, 如果我派发的不是一个对象类型, 而是又是包装了一个延迟派发的函数, 如下.
+```javascript
+function syncIncrement(payload){
+    return function(dispatch,getState){
+        setTimeout(()=> {
+            dispatch(function(dispatch,getState){
+                setTimeout(()=> {
+                    dispatch({type: INTREMENT, payload})
+                }, 6666) 
+            })
+        }, 6666) 
+    }
+}
+```
+### 改造中间件 applyMiddleware
+你说气不气, 这样一运行, 又报错, 第二次派发的动作就不会重新进中间件流程, 而是接着派发, 然后内部又没有处理机制, 所以归根结底`dispatch`的属性是个大难题, 不能返回原生的`dispatch`, 这样就不会重新走流程, 导致无法解决中间件问题, 那就来改造一下`applyMiddleware`
+```javascript
+function applyMiddleware(middleware){
+    ...
+    let dispatch;   🚀
+    let middlewareAPI = {
+        getState: store.getState,
+        dispatch: (...args) => dispatch(...args) 🚀
+    }
+    middleware = middleware(createStore)
+    dispatch = middlewares(store.dispatch) 🚀
+}
+```
+就稍微改了下带`🚀`的地方 这个难题就解决了, 先用变量缓存一下, 虽然第一次是空, 但是我内部不会调用, 最后一句是让每一次派发的`dispatch`都是上一次包装过后的`dispatch` 不至于会略过中间件直接进到下一级.
+
+## redux-promise <Badge text="难度系数🌟🌟🌟" />
+恶心的需求从来都只有第一次很无数次, 即`thunk`中间件之后又一个恶心的需求, 可能派发的又不是一个函数类型, 可能又会存在`Promise`类型的, 好吧, 这个其实也还好, 在写之前先想好策略。 **中间件,那么结构肯定是和`thunk`没区别, `Promise` 与 普通函数的区别好做表示的那就是`then`属性没错了**, 那就从这点入手.
+```javascript
+function promise({dispatch, getState}){
+    return function (next){
+        return function(action){
+            if(action.then && typeof action.then === 'function'){
+                return action.then(dispatch)
+            }
+            next(action)
+        }
+    }
+}
+```
 ## compose <Badge type="warn" text="难度系数🌟🌟🌟" />
-## redux-promise <Badge type="warn" text="难度系数🌟🌟🌟🌟" />
-## redux-persist <Badge type="warn" text="难度系数🌟🌟🌟🌟🌟" />
+好像单个的中间件编写起来也都还好, 没什么致命难度, 那你就错了, 果不其然. 现在我们的中间件只能单独使用, 用第一个就用不了第二个, 那不是很蛋疼, 得想办法将他们都用起来, 最好是想数组的操作一样, 直接挨个传入即可, 在使用之前我们先写一个递归的函数.
+```javascript
+function compose(...fns){
+    if(fns.length === 0) return args => args
+    if(fns.length === 1) return fns[0]
+    return fns.reduce((a,b) => (...args) => a(b(...args)));
+}
+```
+真的 就一行代码, 真的是天秀, 迭代方法. 能将方法由内而外的传入执行, 罒ω罒偷看源码来改的. 还看不懂`reduce`的真的改好好补补基础了. 有了这个函数, 就可以来改造`applyMiddleware`实现中间件级联使用了, 也不是很难.
+### 终极中间件 applyMiddleware
+```javascript
+function applyMiddleware(...middlewares){
+    return function(createStore){
+        return function(reducer){
+            let store = createStore(reducer)
+            let dispatch;
+            let middlewareAPI = {
+                getState: store.getState,
+                dispatch = (...args) => dispatch(...args)
+            }
+            middlewares = middlewares.map(middleware => middleware(middlewareAPI))
+            dispatch = compose(middlewares)(store.dispatch)
+            return {
+                ...store,
+                dispatch
+            }
+        }
+    }
+}
+```
+到此为止, 常用中间件系列, 算是告一段落, 其他的中间件也有编写, 就不在做累赘, 留个地址, 有兴趣者, 可移步
+
+ **地址：<https://github.com/StackFei/ReactFAQ>**
