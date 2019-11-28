@@ -113,7 +113,8 @@ module.exports = {
         {
           title: "Vue系列",
           children: [
-            ["/FAQ/Vue/Cli", "🔨vue-cli"]
+            ["/FAQ/Vue/Cli", "🔨vue-cli"],
+            ["/FAQ/Vue/observer", "🔧observer"]
           ]
         },
         {
