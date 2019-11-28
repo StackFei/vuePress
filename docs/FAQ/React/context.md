@@ -86,4 +86,27 @@ function createContext(){
     }
 }
 ```
-还是比较容易理解的, 在`Provider`的静态属性定义一个`value`接收传入的`value`覆盖, 在留给`Consumer`来执行消费并且传入, 一气呵成, **只能编译函数类型不能编译类类型**
+还是比较容易理解的, 在`Provider`的静态属性定义一个`value`接收传入的`value`覆盖, 在留给`Consumer`来执行消费并且传入, 一气呵成, **只能编译函数类型不能编译类类型**, 基本上算是能渲染了, 但是一到修改属性就又不行了, 只能第一次修改, 后续的修改全都无效. 
+ - **其主要原因还是在于我们修改了属性却没有给属性重新赋值**
+
+在此之前, 我们需要用到新的生命周期函数`getDerivedStateFromProps`, 简单介绍一下, 他是介于更新之前的钩子函数, 接受两个参数`nextProps`,`prevState`两个参数, 分别代表下一个属性, 以及上一个状态, 且返回值可以作为下一次的状态, 刚好可以将其的状态监听赋值给下一个状态. 稍作修改, 只需加入一个静态方法
+```javascript
+static getDerivedStateFromProps(nextProps, prevState){
+    Provider.value = nextProps.value
+    return { value: nextProps.value }
+}
+```
+至此, `context`基本上已经实现完成了, 本身其内部也没有什么复杂的结构, 就是起到一个连接的作用, 由于`contextType`关键字的原因, 无法直接模拟出静态方法, 所以在类中只能通过该下方法来取值.
+```javascript
+class HeaderChild extends React.Component {
+    static contextType = ColorContext;
+    render() {
+        return (
+            <div style={{ border: `3px solid ${HeaderChild.contextType.Provider.value.color}` }}>
+                HeaderChild
+            </div>
+        )
+    }
+}
+```
+ **地址：<https://github.com/StackFei/ReactFAQ>**
