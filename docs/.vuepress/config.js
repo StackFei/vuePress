@@ -104,6 +104,7 @@ module.exports = {
           children: [
             ["/FAQ/React/VirtualDom", "🌰VirtualDom"],
             ["/FAQ/React/react-router", "🍑react-router"],
+            ["/FAQ/React/context", "context"],
             ["/FAQ/React/react-redux", "🍎react-redux"],
             ["/FAQ/React/react-redux-middleware", "🍍react-redux-middleware"],
             ["/FAQ/React/Hooks", "🍊Hooks"],
