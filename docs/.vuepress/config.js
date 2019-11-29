@@ -1,6 +1,6 @@
 module.exports = {
   title: "守夜人笔记",
-  description: "彭云飞的 Blog 维基百科", // meta 中的描述文字，意义不大，SEO用
+  description: "守夜人笔记", // meta 中的描述文字，意义不大，SEO用
   // plugins: ['@vuepress/back-to-top', '@vuepress/medium-zoom'],
   plugins: [
     ['@vuepress/back-to-top', true],
@@ -44,7 +44,7 @@ module.exports = {
     // 增加一个自定义的 favicon(网页标签的图标)
     // 这里的 '/' 指向 docs/.vuepress/public 文件目录
     // 即 docs/.vuepress/public/img/geass-bg.ico
-    ["link", { rel: "icon", href: "/img/geass-bg.ico" }]
+    ["link", { rel: "icon", href: "/img/favicon.ico" }]
   ],
   // base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
@@ -114,7 +114,7 @@ module.exports = {
           title: "Vue系列",
           children: [
             ["/FAQ/Vue/Cli", "🔨vue-cli"],
-            ["/FAQ/Vue/observer", "🔧observer"]
+            ["/FAQ/Vue/observer", "🔧MvvM"]
           ]
         },
         {
