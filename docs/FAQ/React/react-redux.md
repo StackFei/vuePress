@@ -434,8 +434,6 @@ componentDidMount(){
 这块思路也是和上面的无异, 做一个简单的变量存储, 然后将前后的状态做一下对比, 有一点巨坑**this.mapState = nextState**, 如果前后值不相同的话, 一定要用后来的值覆盖掉之前缓存的值, 不然之后每次都不相同, 永远都是和第一次的值作比较, 导致永远都会派发. 当然也有第二种思路, 在`shouldComponentUpdate`中做处理, 用`nextProps`,`nextState`这两个变量作比较, 纯属抛砖引玉.
 
 地址：<https://github.com/StackFei/ReactFAQ>
-<!-- <ClientOnly>
-  <HomeLayout/> 
-</ClientOnly> -->
+
 
 
