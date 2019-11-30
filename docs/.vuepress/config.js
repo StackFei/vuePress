@@ -1,44 +1,10 @@
 module.exports = {
   title: "守夜人笔记",
   description: "守夜人笔记", // meta 中的描述文字，意义不大，SEO用
-  // plugins: ['@vuepress/back-to-top', '@vuepress/medium-zoom'],
-  plugins: [
-    ['@vuepress/back-to-top', true],
-    ['@vuepress/medium-zoom', {
-      selector: 'img',
-      // See: https://github.com/francoischalifour/medium-zoom#options
-      options: {
-        margin: 16
-      }
-    }],
-    // see: https://vssue.js.org/guide/vuepress.html#usage
-    ['@vssue/vuepress-plugin-vssue', {
-      // set `platform` rather than `api`
-      platform: 'github',
-      // all other options of Vssue are allowed
-      owner: 'realpdai',
-      repo: 'tech-arch-doc-comments',
-      clientId: 'xxxxxxxxxxx',
-      clientSecret: 'xxxxxxxxxxxxxxxxxxxxxx',
-    }],
-    // see: https://vuepress.github.io/zh/plugins/copyright/#%E5%AE%89%E8%A3%85
-    ['copyright', {
-      noCopy: false, // 允许复制内容
-      minLength: 100, // 如果长度超过 100 个字符
-      authorName: "https://www.pdai.tech",
-      // clipboardComponent: "请注明文章出处, [Java 全栈知识体系](https://www.pdai.tech)"
-    }],
-    // see: https://github.com/ekoeryanto/vuepress-plugin-sitemap
-    ['sitemap', {
-      hostname: 'https://www.pdai.tech'
-    }],
-    // see: https://github.com/IOriens/vuepress-plugin-baidu-autopush
-    ['vuepress-plugin-baidu-autopush', {
-
-    }],
-    // see: https://github.com/znicholasbrown/vuepress-plugin-code-copy
-    [['vuepress-plugin-code-copy', true]]
-  ],
+  plugins: ['@vuepress/pwa', {
+    serviceWorker: true,
+    updatePopup: true
+  }],
   // 注入到当前页面的 HTML <head> 中的标签
   head: [
     // 增加一个自定义的 favicon(网页标签的图标)
@@ -76,31 +42,31 @@ module.exports = {
       // 打开FAQ主页链接时生成下面这个菜单
       "/FAQ/": [
         //多级菜单形式
-        ["/FAQ/", "FAQ"],
+        ["/FAQ/", "🗂FAQ"],
         {
           // 菜单名
-          title: "Node系列",
+          title: "📔Node",
           // 子菜单
           children: [
             // ['','']=>[路径,标题]
             // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
             // 不以 '/' 结尾的就是指向.md文件
-            ["/FAQ/Node/Koa", "🍊初级Koa"],
+            ["/FAQ/Node/Koa", "⚽️初级Koa"],
           ]
         },
         {
           // 菜单名
-          title: "Css系列",
+          title: "📕Css",
           // 子菜单
           children: [
             // ['','']=>[路径,标题]
             // 或者写成 '路径',标题自动识别为该地址的文件中的h1标题
             // 不以 '/' 结尾的就是指向.md文件
-            ["/FAQ/Css/css", "🍌Css"],
+            ["/FAQ/Css/css", "🚗Css"],
           ]
         },
         {
-          title: "React系列",
+          title: "📘React",
           children: [
             ["/FAQ/React/VirtualDom", "🌰VirtualDom"],
             ["/FAQ/React/react-router", "🍑react-router"],
@@ -111,26 +77,26 @@ module.exports = {
           ]
         },
         {
-          title: "Vue系列",
+          title: "📗Vue",
           children: [
             ["/FAQ/Vue/Cli", "🔨vue-cli"],
-            ["/FAQ/Vue/observer", "🔧MvvM"]
+            ["/FAQ/Vue/observer", "🔧MvvM"],
+            ["/FAQ/Vue/Communication", "⚔通信方式"]
           ]
         },
         {
-          title: "工作系列",
+          title: "📙花里胡哨",
           children: [
-            ["/FAQ/Work/Work1", "👷前端请求的正确打开方式"],
-            ["/FAQ/Work/WeChat", "🤡踩坑React系列小程序"],
-            ["/FAQ/Work/AOP", "🗡AOP面向切片编程"],
-            ["/FAQ/Work/TSC", "🛬TypeScript"],
+            ["/FAQ/Work/Work1", "🤾‍♂️前端请求的正确打开方式"],
+            ["/FAQ/Work/WeChat", "⛹️踩坑React系列小程序"],
+            ["/FAQ/Work/AOP", "🏌️‍♂️AOP面向切片编程"],
+            ["/FAQ/Work/TSC", "🏋️‍♂️TypeScript"],
           ]
         }
       ],
-
       // 打开Thought主页链接时生成下面这个菜单
       "/Thought/": [
-        ["/Thought/", "🚀"],
+        ["/Thought/", "🗞"],
       ]
     }
   }
