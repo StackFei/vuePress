@@ -13,6 +13,8 @@
  - **<Badge text="$parent $children"/>**
  - **<Badge text="$attrs $listeners"/>**
  - **<Badge text="provider inject"/>**
+ - **<Badge text="ref"/>**
+ - **<Badge text="eventBus"/>**
 
 ### 常见小🌰
 常见的祖孙三代传递数据的小🌰
@@ -250,4 +252,49 @@ Vue.prototype.$broadscat = function(E,V){
 
 看了下官方推荐, 不建议使用, 原因是状态混乱, 看到`provider`就让我想到了`React`中的`context`, 一看就是全局包装暴露父组件本身实例, 那就不做过多阐述, 人家都不推荐使用, 想要了解方法的可以直接前往官网查看.
 
+ - **实例获取方法**<Badge text="ref"/>
+
+这个就强了, 直接获取到真实`DOM`的实例来操作, 由于`Vue`是一个实例, 再也不用担心, 会想`React`一样碰到函数式写法,拿不到`this`实例, 这个可以直接操作实例上的方法, 可以说是最简单粗暴的.看用法
+```vue
+<template>
+    <Child ref="son2"></Child>
+</template>
+<script>
+    methods: {
+    // 直接通过parent上的ref来获取
+    show(){
+      alert(3)
+    }
+  }
+</script>
+```
+简单粗暴, 只需要注意获取真实`DOM`千万不要重名, 不然就会出现覆盖或者找不到实例的情况.
+
+ - **第三者方法**<Badge text="eventBus"/>
+
+听说这个是用的最为常见的, 用法也是`$emit`,`$on`的用法, 和`$parent`,`$children`有些许差异, 这个更像是将转接权交给第三者来转发, 之后就可以在任何组件定义事件源, 在任何组件触发任何事件源, 用起来感觉很舒服, 先根据需求来试试怎么写.
+```js
+Vue.prototype.$bus = new Vue()
+```
+很简单有不有, 只需要暴露一个实例即可, 那他的实例上不就有`$emit`触发源以及`$on`绑定源, 不就可以做到任意化,
+```vue
+<script>
+// Parent
+  mounted(){
+      // eventsBus
+      this.$bus.$on("bus",()=>{console.log('bus')})
+  },
+</script>
+<script>
+// anyComponent
+  mounted(){
+    this.$nextTick(()=>{
+      this.$bus.$emit('bus')
+    })
+  }
+</script>
+```
+由于`mounted`的钩子执行顺序的原因, 这里使用`$nextTick`来延迟执行, 等到视图全图挂载完成在执行该方法，看起来似乎并没有什么毛病, 但个人感觉这样会造成很多不必要的更细操作以及数据混乱, 一旦操作复杂就会出现状态丢失问题. 
+
+ - 以上各种使用方法, 个人还是最推荐`props $emit`, 感觉这两个最不会出现问题, 最简单的也是最稳妥的.
 
