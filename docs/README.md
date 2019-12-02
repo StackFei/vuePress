@@ -3,7 +3,7 @@ home: true
 heroImage: /img/logo.png
 heroText: "BUG"
 tagline: 风萧萧兮易水寒，脱发之路一去不复返
-actionText: Check Me →
+actionText: Check Me 🔋  →
 actionLink: /FAQ/
 features:
 - title: Wiki - 求索

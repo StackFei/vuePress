@@ -4,7 +4,7 @@ module.exports = {
         popupComponent: 'MySWUpdatePopup',
         updatePopup: {
             message: "一大波新内容想你袭来.",
-            buttonText: "🔨",
+            buttonText: "⌛",
             // 自定义弹窗
         }
     },

@@ -22,7 +22,7 @@ module.exports = {
     sidebar: {
       "/FAQ/": [
         //多级菜单形式
-        ["/FAQ/", "🗂FAQ"],
+        ["/FAQ/", "📚FAQ"],
         {
           // 菜单名
           title: "📔Node",
@@ -53,7 +53,7 @@ module.exports = {
           children: [
             ["/FAQ/Vue/Cli", "🔨vue-cli"],
             ["/FAQ/Vue/observer", "🔧MvvM"],
-            ["/FAQ/Vue/Communication", "⚔通信方式"]
+            ["/FAQ/Vue/Communication", "🛠️通信方式"]
           ]
         },
         {
@@ -67,7 +67,7 @@ module.exports = {
         }
       ],
       "/Thought/": [
-        ["/Thought/", "🗞"],
+        ["/Thought/", "✒️"],
       ]
     }
   }
