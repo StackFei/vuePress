@@ -1,4 +1,10 @@
-# 手搓一个属于自己的Vue-Cli
+---
+title: 手搓一个属于自己的Vue-Cli 
+date: 2019-10-30
+tags:
+- Vue
+- Cli
+---
 
 > 前端世界，框架横行。各种基于脚手架的工程化开发，大行其道。以前面试，不会框架算得上的耻辱。现如今，不会脚手架，也总感觉缺点啥。
 较为成熟的脚手架比如Vue的 `Vue-Cli`, React的 `create-react-app`, ReactNative的 `react-native-cli` ，这些算的上是业界较为成熟的脚手架

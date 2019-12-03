@@ -1,4 +1,9 @@
-# Hooks
+---
+title: Hooks
+date: 2019-11-26
+tags:
+- React
+---
 
 
 >`React` v16.7.0-alpha 中第一次引入了 Hooks 的概念，在 v16.8.0 版本被正式发布。`React hook` 在 `React` 中只是对 `React hook` 的概念性的描述，在开发中我们用到的实际功能都应该叫做 `React hook`。

@@ -1,4 +1,9 @@
-# 深入浅出react-redux-middleware
+---
+title: 深入浅出react-redux-middleware
+date: 2019-11-26
+tags:
+- React
+---
 
 > `react-redux`核心系列组件已经过的差不多了, 接下里该碰一碰周边了, `middleware` 很熟悉的名词, 没错`Node`系列都是靠他吃饭, 接下里将尝试搓一搓`redux`中间件, 其实大部分没什么难度, 主要就是起到过滤服务,老规矩, 学习记录, 高手勿扰.
 

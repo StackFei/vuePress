@@ -1,4 +1,9 @@
-# 最简单的react系列组件react-router
+---
+title: 最简单的react系列组件react-router
+date: 2019-12-01
+tags:
+- React
+---
 
 > 日常记笔记, 不过这一节到是没什么难点, 比较任何框架, 库最简单的莫过于路由跳转, 尤其`SPA`, 大多都是模仿浏览器原生API套壳实现, 这一节可以说是最简单的`react`系列
 

@@ -3,7 +3,7 @@ module.exports = {
         serviceWorker: true,
         popupComponent: 'MySWUpdatePopup',
         updatePopup: {
-            message: "一大波新内容想你袭来.",
+            message: "一大波新内容向你袭来.",
             buttonText: "⌛",
             // 自定义弹窗
         }

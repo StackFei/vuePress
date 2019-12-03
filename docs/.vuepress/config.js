@@ -6,15 +6,30 @@ module.exports = {
   description: "守夜人笔记", // meta 中的描述文字，意义不大，SEO用
   plugins: pluginConf,
   head: [
-    ["link", { rel: "icon", href: "/img/favicon.ico" }]
+    ["link", { rel: "icon", href: "/img/favicon.ico" }],
+    ['meta', { name: 'viewport', content: 'width=device-width,initial-scale=1,user-scalable=no' }]
   ],
   // base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
     // lineNumbers: true // 代码块显示行号
   },
+  theme: 'reco',
   // 顶部导航栏
   themeConfig: {
-    sidebarDepth: 5, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
+    huawei: false,
+    // 备案号
+    // record: '京ICP备17067634号-1',
+    // 项目开始时间, 只填写年份
+    startYear: '2017',
+    author: '彭雲飝',
+    // type: 'blog',
+    // 密钥
+    // keyPage: {
+    //   keys: ['123456'],
+    //   color: '#42b983', // 登录页动画球的颜色
+    //   lineColor: '#42b983' // 登录页动画线的颜色
+    // },
+    sidebarDepth: 1, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
     lastUpdated: "最后更新时间", // 文档更新时间：每个文件git最后提交的时间,
     smoothScroll: true, //页面滚动效果。
     // 顶部导航栏
@@ -57,14 +72,20 @@ module.exports = {
           ]
         },
         {
+          title: '📒Webpack',
+          children: [
+            ["/FAQ/webpack/webpack", "☘初始webpack"],
+          ]
+        },
+        {
           title: "📙花里胡哨",
           children: [
-            ["/FAQ/Work/Work1", "🤾‍♂️前端请求的正确打开方式"],
-            ["/FAQ/Work/WeChat", "⛹️踩坑React系列小程序"],
-            ["/FAQ/Work/AOP", "🏌️‍♂️AOP面向切片编程"],
             ["/FAQ/Work/TSC", "🏋️‍♂️TypeScript"],
+            ["/FAQ/Work/AOP", "🏌️‍♂️AOP面向切片编程"],
+            ["/FAQ/Work/WeChat", "⛹️踩坑React系列小程序"],
+            ["/FAQ/Work/Work1", "🤾‍♂️前端请求的正确打开方式"],
           ]
-        }
+        },
       ],
       "/Thought/": [
         ["/Thought/", "✒️"],

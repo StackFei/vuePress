@@ -1,4 +1,9 @@
-# 尝试还原VirtualDom
+---
+title: 尝试还原VirtualDom
+date: 2019-10-29
+tags:
+- React
+---
 
 
 >高仿`React`的虚拟dom,外加冒牌的`diff`算法

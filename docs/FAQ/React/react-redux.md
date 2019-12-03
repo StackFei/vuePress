@@ -1,4 +1,9 @@
-# 简单的理解react-redux全家桶
+---
+title: 简单理解react-redux全家桶
+date: 2019-11-29
+tags:
+- React
+---
 
 >根据自己的学习理解来剖析`react`全家桶的使用以及实现道理
 

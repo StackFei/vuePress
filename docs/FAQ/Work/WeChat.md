@@ -1,4 +1,10 @@
-# React写法开发weapp
+---
+title: React写法开发weapp 
+date: 2019-11-02
+tags:
+- React
+- 小程序
+---
 
 >  各大小程序编译平台斗的如火如荼，吾独爱 `React` 系列，几乎类`React` 开发写法也给很多不会类`Vue` 写法的人带来了福音
 

@@ -1,4 +1,9 @@
-# 基础篇
+---
+title: typescript基础篇 
+date: 2019-11-08
+tags:
+- typescript
+---
 
 > typescript有多好用，就不在做过多阐述，理工男是不过理论知识的，直接上硬菜，（高手勿扰）
 
