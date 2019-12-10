@@ -81,6 +81,7 @@ module.exports = {
           title: "📙花里胡哨",
           children: [
             ["/FAQ/Work/TSC", "🏋️‍♂️TypeScript"],
+            ["/FAQ/Work/cicd", "🚴持续集成部署（ci/cd）"],
             ["/FAQ/Work/AOP", "🏌️‍♂️AOP面向切片编程"],
             ["/FAQ/Work/WeChat", "⛹️踩坑React系列小程序"],
             ["/FAQ/Work/Work1", "🤾‍♂️前端请求的正确打开方式"],
