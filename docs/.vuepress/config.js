@@ -13,22 +13,8 @@ module.exports = {
   markdown: {
     // lineNumbers: true // 代码块显示行号
   },
-  theme: 'reco',
   // 顶部导航栏
   themeConfig: {
-    huawei: false,
-    // 备案号
-    // record: '京ICP备17067634号-1',
-    // 项目开始时间, 只填写年份
-    startYear: '2017',
-    author: '彭雲飝',
-    // type: 'blog',
-    // 密钥
-    // keyPage: {
-    //   keys: ['123456'],
-    //   color: '#42b983', // 登录页动画球的颜色
-    //   lineColor: '#42b983' // 登录页动画线的颜色
-    // },
     sidebarDepth: 1, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
     lastUpdated: "最后更新时间", // 文档更新时间：每个文件git最后提交的时间,
     smoothScroll: true, //页面滚动效果。
