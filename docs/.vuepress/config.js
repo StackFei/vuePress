@@ -43,6 +43,7 @@ module.exports = {
           title: "📔Node",
           // 子菜单
           children: [
+            ["/FAQ/Node/require", "🏀require基操"],
             ["/FAQ/Node/Koa", "⚽️初级Koa"],
           ]
         },

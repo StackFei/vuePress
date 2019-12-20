@@ -272,4 +272,5 @@ docker container run -p 80:80 -d --name object-web-container -d object-web:1.0
 ```
 
 至此, 基于`github`,`docker`,`ci/cd`的持续集成部署便搞定了.
+ **地址：<https://github.com/StackFei/FAQ/tree/cicd#>**
 
