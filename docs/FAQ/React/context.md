@@ -66,7 +66,7 @@ function Counter() {
     </MyContext.Consumer>)
 }
 ```
-## 实现思路  <Badge text="bate" type"warn"/> 
+## 实现思路  <Badge text="bate" /> 
 清晰明了, `context`就是一个方法, 然后有两个内部函数`Provider`,`Consumer`, 并且`Consumer`是可以使用`Provider`传入的变量, 也不是很难. 先试一试bate版本的, 由于`class` 是使用`contextType`来获取静态属性方法的, 这个放在后面, 先来实现一下`function`版本的编译.
 ```javascript
 function createContext(){

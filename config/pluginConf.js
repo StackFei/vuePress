@@ -10,7 +10,7 @@ module.exports = {
     },
     '@vuepress/back-to-top': true,
     '@vuepress/medium-zoom': {
-        selector: '.theme-default-content:not(.custom) img',
+        selector: '.content__default:not(.custom) img ',
         options: {
             margin: 16
         }
