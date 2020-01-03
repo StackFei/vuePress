@@ -26,7 +26,7 @@ module.exports = {
         ["/FAQ/", "📚FAQ"],
         {
           // 菜单名
-          title: "📔Node",
+          title: "📔",
           // 子菜单
           children: [
             ["/FAQ/Node/require", "🏀require基操"],
@@ -34,13 +34,13 @@ module.exports = {
           ]
         },
         {
-          title: "📕Css",
+          title: "📕",
           children: [
-            ["/FAQ/Css/css", "🚗Css"],
+            ["/FAQ/ES/promise", "🚗promise"],
           ]
         },
         {
-          title: "📘React",
+          title: "📘",
           children: [
             ["/FAQ/React/VirtualDom", "🌰VirtualDom"],
             ["/FAQ/React/react-router", "🍑react-router"],
@@ -51,7 +51,7 @@ module.exports = {
           ]
         },
         {
-          title: "📗Vue",
+          title: "📗",
           children: [
             ["/FAQ/Vue/Cli", "🔨vue-cli"],
             ["/FAQ/Vue/observer", "🔧MvvM"],
@@ -59,13 +59,13 @@ module.exports = {
           ]
         },
         {
-          title: '📒Webpack',
+          title: '📒',
           children: [
             ["/FAQ/webpack/webpack", "☘初始webpack"],
           ]
         },
         {
-          title: "📙花里胡哨",
+          title: "📙",
           children: [
             ["/FAQ/Work/TSC", "🏋️‍♂️TypeScript"],
             ["/FAQ/Work/cicd", "🚴持续集成部署（ci/cd）"],
