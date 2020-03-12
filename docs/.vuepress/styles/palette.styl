@@ -1,6 +1,6 @@
 // $contentWidth = 100%
 
-$accentColor = #428eb9        //主题颜色
+$accentColor = #2a8ff7        //主题颜色
 $textColor = #2c3e50
 $borderColor = #eaecef
 // $codeBgColor = #000000
@@ -9,7 +9,7 @@ $badgeWarningColor = darken(#ffe564, 35%)
 $badgeErrorColor = #DA5961
 
 ::-webkit-scrollbar {
-  // display: none; /* Chrome Safari */
+  display: none; /* Chrome Safari */
 }
 
 /*修改prev和next的max-width*/
@@ -27,6 +27,15 @@ $badgeErrorColor = #DA5961
 
 main {
   margin 0
+}
+
+.theme-default-content {
+    padding-bottom: 2rem;
+    // padding-left 20rem
+    background-size: 25px 25px;
+    background-repeat: repeat;
+    background-image: linear-gradient(to bottom, #e6f6fd 0, #e6f6fd 1px, transparent 1px), linear-gradient(to right, #e6f6fd 0, #e6f6fd 1px, transparent 1px);
+    display: block;
 }
 
 .hero {
@@ -70,8 +79,69 @@ main {
     transition background-color 0.1s ease
     box-sizing border-box
     border none
+    box-shadow:0 2px 15px #e6f6fd;
 }
 
+// 按钮点击特效
+.action-button:before,.action-button:after {
+	position:absolute;
+	content:'';
+	display:block;
+	width:140%;
+	height:100%;
+	left:-20%;
+	z-index:-1000;
+	transition:all ease-in-out 0.5s;
+	background-repeat:no-repeat;
+}
+.action-button:before {
+	display:none;
+	top:-75%;
+	background-image:radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,transparent 20%,#ff0081 20%,transparent 30%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,transparent 10%,#ff0081 15%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%);
+	background-size:10% 10%,20% 20%,15% 15%,20% 20%,18% 18%,10% 10%,15% 15%,10% 10%,18% 18%;
+}
+.action-button:after {
+	display:none;
+	bottom:-75%;
+	background-image:radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,transparent 10%,#ff0081 15%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%),radial-gradient(circle,#ff0081 20%,transparent 20%);
+	background-size:15% 15%,20% 20%,18% 18%,20% 20%,15% 15%,10% 10%,20% 20%;
+}
+.action-button:active {
+	transform:scale(0.9);
+	background-color:#e60074;
+	box-shadow:0 2px 25px rgba(255,0,130,0.2);
+}
+.action-button.animate:before {
+	display:block;
+	animation:topBubbles ease-in-out 0.75s forwards;
+}
+.action-button.animate:after {
+	display:block;
+	animation:bottomBubbles ease-in-out 0.75s forwards;
+}
+@keyframes topBubbles {
+	0% {
+	background-position:5% 90%,10% 90%,10% 90%,15% 90%,25% 90%,25% 90%,40% 90%,55% 90%,70% 90%;
+}
+50% {
+	background-position:0% 80%,0% 20%,10% 40%,20% 0%,30% 30%,22% 50%,50% 50%,65% 20%,90% 30%;
+}
+100% {
+	background-position:0% 70%,0% 10%,10% 30%,20% -10%,30% 20%,22% 40%,50% 40%,65% 10%,90% 20%;
+	background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%;
+}
+}@keyframes bottomBubbles {
+	0% {
+	background-position:10% -10%,30% 10%,55% -10%,70% -10%,85% -10%,70% -10%,70% 0%;
+}
+50% {
+	background-position:0% 80%,20% 80%,45% 60%,60% 100%,75% 70%,95% 60%,105% 0%;
+}
+100% {
+	background-position:0% 90%,20% 90%,45% 70%,60% 110%,75% 80%,95% 70%,110% 10%;
+	background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%;
+}
+}
 
 // nav
 .navbar
@@ -83,20 +153,30 @@ main {
     height: 3.6rem;
     background-color: #fff;
     box-sizing: border-box;
-    border none
+    border none !important
     box-shadow 0 8px 24px -2px rgba(0,0,0,.05)
 
-// 顶部navbar 单个item
-.nav-item > a:not(.external):hover, 
-.nav-item > a:not(.external).router-link-active {
-    padding-bottom 10px
-    border-bottom 2px solid#428eb9
+.navbar, .sidebar-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border: none
 }
 
-input {
+// 顶部navbar 单个item
+.nav-item > a:not(.external):hover
+    color #2a8ff7;
+    border none
+
+.nav-item > a:not(.external).router-link-active 
+    padding-bottom 10px
+    border-bottom 2px solid#2a8ff7
+
+
+input 
     border none !important
     background: #f5f6f7 !important;
-}
+
 
 // navbar 单个选中 item
 .home .features {
@@ -114,6 +194,19 @@ input {
   align-content: stretch;
   justify-content: space-between;
 }
+
+.home .feature 
+    flex-grow: 1;
+    flex-basis: 30%;
+    max-width: 30%;
+    padding 0.5rem
+    box-sizing: border-box
+    border-radius: 10px
+    transition: all 0.5s
+
+.home .feature:hover 
+    box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+   
 
 .home .feature:nth-child(1):before {
   content: "";
@@ -151,14 +244,14 @@ a.sidebar-link.active {
     font-weight: 600;
     box-shadow 0 8px 24px -2px rgba(0,0,0,.05)
     border none
-    padding-left  2rem
+    // padding-left  2rem
 }
 
 
 blockquote
   font-size 1rem
   color #2c3e50;
-  border-left .2rem solid #428eb9
+  border-left .2rem solid #2a8ff7
   background-color #f3f5f7
   margin 1rem 0
   padding 1rem 0 1rem 1rem
@@ -171,12 +264,28 @@ blockquote
 h1
   font-size 2rem
   padding-bottom 1rem
-  border-bottom 1px solid $borderColor
+  // border-bottom 1px solid $borderColor
 
 // markdown h2
 h2
   font-size 1.65rem
-  border-bottom 0px solid $borderColor
+  // border-bottom 0px solid $borderColor
+
+.theme-default-content code
+    color: #2a8ff7 ;
+    padding: 0.25rem 0.5rem;
+    margin: 0;
+    font-size: 0.85em;
+    background-color: #e6f6fd ;
+    border-radius: 3px;
+
+p 
+  color: #555555 ;
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 30px;
 
 // custom block for tip
 .custom-block
@@ -190,7 +299,7 @@ h2
     margin 1rem 0
   &.tip
     background-color #dfefff
-    border-color #428eb9
+    border-color #2a8ff7
 
 
 

@@ -28,6 +28,7 @@ module.exports = {
           title: "花里胡哨必备点",
           collapsable: false,
           children: [
+            ["/FAQ/ES/clone", "🚙浅析克隆"],
             ["/FAQ/ES/promise", "🚗promise"],
             ["/FAQ/ES/react-window", "🚕长列表"],
           ]
