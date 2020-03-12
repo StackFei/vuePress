@@ -7,10 +7,10 @@ set -e
 npm run docs:build 
 
 # 如果是发布到自定义域名
-echo 'www.pengyunfei.top' > CNAME
+# echo 'www.pengyunfei.top' > CNAME
 
 # 进入生成的文件夹 
-cd docs/.vuepress/dist 
+cd docs/.vuepress/blog 
 git init 
 git add -A 
 git commit -m 'deploy' 

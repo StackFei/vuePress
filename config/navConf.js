@@ -5,7 +5,7 @@ module.exports = [
     {
         text: "GitHub",
         items: [
-            { text: "GitHub首页", link: "https://github.com/StackFei" },
+            { text: "GitHub", link: "https://github.com/pyunfei" },
         ]
     }
 ]
