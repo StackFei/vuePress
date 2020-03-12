@@ -1,6 +1,6 @@
 // $contentWidth = 100%
 
-$accentColor = #ffc0cb        //主题颜色
+$accentColor = #428eb9        //主题颜色
 $textColor = #2c3e50
 $borderColor = #eaecef
 // $codeBgColor = #000000
@@ -8,45 +8,8 @@ $badgeTipColor = #42b983
 $badgeWarningColor = darken(#ffe564, 35%)
 $badgeErrorColor = #DA5961
 
-::-webkit-scrollbar
-{
-  width: 8px;
-  height: 8px;
-  border-radius: 10px;
-  background-color: #F5F5F5;
-}
-
-/*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track
-{
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  background-color: #F5F5F5;
-}
-
-
-/*定义滑块 内阴影+圆角*/
-::-webkit-scrollbar-thumb
-{
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  border-radius: 10px;
-  /* 线性渐变 */
-  background-image: -webkit-gradient(linear,
-  left bottom, left top,
-   color-stop(0.44, #e3c179),
-   color-stop(0.72, #b43531),
-   color-stop(0.86, #397eb4));
-  transition: 0.3s ease-in-out;
-}
-/*定义滑块悬浮样式*/
-::-webkit-scrollbar-thumb:hover{
-  background-image: -webkit-gradient(linear,
-  left bottom, left top,
-  color-stop(0.44, #e3c179),
-  olor-stop(0.72, #b43531),
-  color-stop(0.86, #397eb4));
-  transition: 0.3s ease-in-out;
+::-webkit-scrollbar {
+  // display: none; /* Chrome Safari */
 }
 
 /*修改prev和next的max-width*/
@@ -54,11 +17,148 @@ $badgeErrorColor = #DA5961
   max-width: 1040px
 }
 
+// 主页面
+.home {
+    padding 0
+    max-width 100%
+    margin 0px auto
+    display block
+}
+
+main {
+  margin 0
+}
+
+.hero {
+  padding 3rem 0
+  margin 54px 0
+  background-color #f5f6f8
+  overflow hidden
+}
+
+.home .hero h1 {
+  // margin: 0
+  border none
+}
+
+.home .hero .description {
+    max-width: 35rem;
+    font-size: 1.6rem;
+    line-height: 1.3;
+    color: #000;
+    // display none
+}
+.home .hero .description:after{
+  content: "⚔🛡";
+  display: block;
+  position: relative
+  left 0
+  top 0
+  margin-top -33px
+  height: 50px;
+  background-color #f5f6f8
+  text-align center
+}
+
+.home .hero .action-button {
+    display inline-block
+    font-size 15px
+    color #fff
+    border-radius 25px
+    cursor: pointer;
+    outline: none;
+    transition background-color 0.1s ease
+    box-sizing border-box
+    border none
+}
+
+
+// nav
+.navbar
+    position: fixed;
+    z-index: 20;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3.6rem;
+    background-color: #fff;
+    box-sizing: border-box;
+    border none
+    box-shadow 0 8px 24px -2px rgba(0,0,0,.05)
+
+// 顶部navbar 单个item
+.nav-item > a:not(.external):hover, 
+.nav-item > a:not(.external).router-link-active {
+    padding-bottom 10px
+    border-bottom 2px solid#428eb9
+}
+
+input {
+    border none !important
+    background: #f5f6f7 !important;
+}
+
+// navbar 单个选中 item
+.home .features {
+  max-width 960px
+  margin 0 auto
+  // border-top: 1px solid #eaecef;
+  text-align center
+  border none
+  padding: 1.2rem 0;
+  margin-top: 2.5rem;
+  cursor pointer
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: stretch;
+  justify-content: space-between;
+}
+
+.home .feature:nth-child(1):before {
+  content: "";
+  margin:  0 auto
+  display: block;
+  height: 40px;
+  width 40px
+  text-align center
+  background: url(/img/1.png) no-repeat;
+  background-size: 100%;
+}
+.home .feature:nth-child(2):before {
+  content: "";
+  margin:  0 auto
+  display: block;
+  height: 40px;
+  width 40px
+  text-align center
+  background: url(/img/2.png) no-repeat;
+  background-size: 100%;
+}
+.home .feature:nth-child(3):before {
+  content: "";
+  margin:  0 auto
+  display: block;
+  height: 40px;
+  width 40px
+  text-align center
+  background: url(/img/3.png) no-repeat;
+  background-size: 100%;
+}
+
+// 左侧
+a.sidebar-link.active {
+    font-weight: 600;
+    box-shadow 0 8px 24px -2px rgba(0,0,0,.05)
+    border none
+    padding-left  2rem
+}
+
 
 blockquote
   font-size 1rem
   color #2c3e50;
-  border-left .5rem solid #ffc0cb
+  border-left .2rem solid #428eb9
   background-color #f3f5f7
   margin 1rem 0
   padding 1rem 0 1rem 1rem
@@ -92,12 +192,11 @@ h2
     background-color #dfefff
     border-color #428eb9
 
-// logo
-.navbar
-  .logo
-    height $navbarHeight - 1.6rem
-    min-width $navbarHeight - 1.6rem
-    margin-right 0rem
-    vertical-align top
+
+
+
+
+
+
 
 

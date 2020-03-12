@@ -8,7 +8,7 @@ tags:
 
 ## Polyfill
 
-- Call/Apply
+- Call/Apply/Bind
 ```js
 {
   Function.prototype.call = function (target, ...args) {
@@ -33,6 +33,20 @@ tags:
   }
   const testObj = { a: 1 }
   test.apply(testObj, [1, 2])
+
+   ~(function (prototype) {
+    prototype.bind = function (context, ...outerArgs) {
+      let thatFunc = this;
+      let fBound = function (...innerArgs) {
+        return thatFunc.apply(
+          this instanceof thatFunc ? this : context,
+          [...outerArgs, ...innerArgs]
+        )
+      }
+      fBound.prototype = Object.create(thatFunc.prototype)
+      return fBound;
+    }
+  })(Function.prototype);
 }
 ```
 
@@ -103,6 +117,91 @@ tags:
   const newNest = nest(obj);
   console.log(JSON.stringify(newNest, null, 2))
 }
+```
+
+- 控制最大并发数
+```js
+{
+  class MaxNum {
+    constructor(max) {
+      this._max = max;
+      this.maxTarget = [];
+    }
+    take(task) {
+      if (this._max > 0) {
+        this._max--;
+        task();
+      } else {
+        this.maxTarget.push(task)
+      }
+    }
+    leave() {
+      this._max++;
+      const task = this.maxTarget.shift();
+      if (task)
+        this.take();
+    }
+  }
+  const max = new MaxNum(2);
+  console.time("default")
+  max.take(() => max.leave(), 1000);
+  max.take(() => max.leave(), 2000);
+  max.take(() => {
+    max.leave();
+    console.timeEnd('default')
+  }, 3000);
+}
+```
+- 顺序请求
+```js
+  const parentSort = (target) => {
+    Promise.all(target.map(item => new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', item);
+      xhr.responseType = 'json';
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            resolve(xhr.response)
+          }
+        }
+      }
+      xhr.send();
+    }))).then(res => {
+      console.log(res)
+    })
+  }
+
+  const paintOrder = (target) => {
+    const result = [];
+    let count = 0;
+    target.forEach((item, index) => {
+      sendRequest(item, index)
+    });
+    function sendRequest(item, index) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', item);
+      xhr.responseType = 'json';
+      xhr.onreadystatechange = function (event) {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            result[index] = event.target.response;
+            count++;
+            if (count === target.length) {
+              console.log(result)
+            }
+          }
+        } else {
+          result[index] = event.statusText;
+          count++;
+          if (count === target.length) {
+            console.log(result)
+          }
+        }
+      }
+      xhr.send();
+    }
+  }
 ```
 
 <!-- <ClientOnly>
