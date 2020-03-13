@@ -1,12 +1,22 @@
----
-title: 📌 整理笔记与君共勉
-date: 2019-12-02
-tags:
-- FAQ
-- 测试
----
+
+<el-divider content-position="left">功能性函数</el-divider>
+
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;序列化树结构](#m1)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;列表控制最大并发数](#m2)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;按列表顺序请求](#m3)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;防抖](#m4)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;节流](#m5)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;反转字符串编码问题](#m6)
+
+<el-divider content-position="left">Polyfill</el-divider>
+
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;Call/Apply/Bind](#g1)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;_flat](#g2)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;_reduce](#g3)
 
 ## Polyfill
+
+<div id="g1"></div>
 
 - Call/Apply/Bind
 ```js
@@ -50,6 +60,8 @@ tags:
 }
 ```
 
+<div id="g2"></div>
+
 -  _flat
 ```js
 {
@@ -77,6 +89,8 @@ tags:
 }
 ```
 
+<div id="g3"></div>
+
 - _reduce
 ```js
 {
@@ -97,9 +111,16 @@ tags:
   console.log(r)
 }
 ```
+
+
+---
+
 ## 功能性函数
 
--  序列化树结构
+<div id="m1"></div>
+
+- 序列化树结构
+
 ```js
 {
   const nest = (items, id = null, link = 'parent_id') =>
@@ -119,7 +140,10 @@ tags:
 }
 ```
 
-- 控制最大并发数
+<div id="m2"></div>
+
+- 控制最大并发数 
+
 ```js
 {
   class MaxNum {
@@ -152,7 +176,11 @@ tags:
   }, 3000);
 }
 ```
+
+<div id="m3"></div>
+
 - 顺序请求
+
 ```js
   const parentSort = (target) => {
     Promise.all(target.map(item => new Promise((resolve, reject) => {
@@ -204,6 +232,60 @@ tags:
   }
 ```
 
-<!-- <ClientOnly>
-  <Demo/> 
-</ClientOnly> -->
+<div id="m4"></div>
+
+-  防抖
+
+```js
+const debounce = (func, wait = 50) => {
+  // 缓存一个定时器id
+  let timer = 0
+  // 这里返回的函数是每次用户实际调用的防抖函数
+  // 如果已经设定过定时器了就清空上一次的定时器
+  // 开始一个新的定时器，延迟执行用户传入的方法
+  return function (...args) {
+    if (timer) clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, wait)
+  }
+}
+```
+
+<div id="m5"></div>
+
+- 节流
+
+```js
+const throttle = (func, wait = 50) => {
+  // 上一次执行该函数的时间
+  let lastTime = 0
+  return function (...args) {
+    // 当前时间
+    let now = +new Date()
+    // 将当前时间和上一次执行函数时间对比
+    // 如果差值大于设置的等待时间就执行函数
+    if (now - lastTime > wait) {
+      lastTime = now
+      func.apply(this, args)
+    }
+  }
+}
+```
+
+<div id="m6"></div>
+
+- 反转字符串编码问题
+```js
+const str = '头跟翻会🦊舞跳会🐒小树上会🐘笨大';
+
+// 常规操作
+str.split('').reverse()
+["大", "笨", "�", "�", "会", "上", "树", "小", "�", "�", "会", "跳", "舞", "�", "�", "会", "翻", "跟", "头"]
+
+// 解决字符串乱码问题
+Array.from(str).reverse()
+["大", "笨", "🐘", "会", "上", "树", "小", "🐒", "会", "跳", "舞", "🦊", "会", "翻", "跟", "头"]
+
+归根到底, 汉字编码问题
+```
