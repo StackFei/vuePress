@@ -1,7 +1,7 @@
 module.exports = [
     { text: "home", link: "/" },
     { text: "求索", link: "/FAQ/" },
-    { text: "随笔", link: "/Thought/" },
+    { text: "折线", link: "/Line/" },
     {
         text: "GitHub",
         items: [

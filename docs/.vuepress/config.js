@@ -74,8 +74,8 @@ module.exports = {
           ]
         },
       ],
-      "/Thought/": [
-        ["/Thought/", "✒️"],
+      "/Line/": [
+        ["/Line/", "✒️"],
       ]
     }
   }
