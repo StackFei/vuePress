@@ -8,11 +8,41 @@
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;节流](#m5)
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;反转字符串编码问题](#m6)
 
+<el-divider content-position="left">零散点</el-divider>
+
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;继承问题](#j1)
+
 <el-divider content-position="left">Polyfill</el-divider>
 
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;Call/Apply/Bind](#g1)
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;_flat](#g2)
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;_reduce](#g3)
+
+## 零散点
+
+<div id="j1"></div>
+
+```js
+function Person (money) {this.money = money}
+Person.prototype.getMoney = () => console.log(this.money)
+
+function Son (my_money) {
+  Person.call(this, money);
+  this.my_money = my_money
+}
+Son.prototype.getMoney = () => console.log(this.my_money)
+
+Son.prototype = Object.create(Person.prototype, {
+  constructor: {
+    value: Son
+  }
+})
+
+const son = new Son(1000)
+console.log(son instanceof Son);
+console.log(son instanceof Person);
+
+```
 
 ## Polyfill
 
