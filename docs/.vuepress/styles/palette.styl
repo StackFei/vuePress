@@ -174,9 +174,20 @@ main {
     border-bottom 2px solid#2a8ff7
 
 
-input 
-    border none !important
-    background: #f5f6f7 !important;
+// input 
+//     border none !important
+//     background: #f5f6f7 !important;
+.search-box
+  input
+    width 0
+    border-color transparent
+    padding-right 0
+    cursor pointer
+    &:focus
+      width 10rem
+      border none !important
+      background: #f5f6f7 !important;
+      cursor text
 
 
 // navbar 单个选中 item
@@ -260,11 +271,12 @@ blockquote
   & > p
     margin 0
 
-// markdown h1
-h1
-  font-size 2rem
-  padding-bottom 1rem
-  // border-bottom 1px solid $borderColor
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
 
 // markdown h2
 h2
@@ -300,12 +312,4 @@ p
   &.tip
     background-color #dfefff
     border-color #2a8ff7
-
-
-
-
-
-
-
-
 

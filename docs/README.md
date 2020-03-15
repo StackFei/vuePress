@@ -26,6 +26,17 @@ features:
 ---
 
 <template>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>热门推荐</span>
+    </div>
+    <div v-for="(item, index) in list" :key="index" @click="go(item)" class="text item">
+      <i class="el-icon-collection-tag"></i>
+      <span class="dir">求索 /</span> 
+      <span class="tit">{{ item.title }}</span>
+  <!-- <div class="intro" v-if="item.excerpt" v-html="item.excerpt"></div> -->
+    </div>
+  </el-card>
   <div class="footer">
     <i class="el-icon-time"></i>  {{time}}
   </div>
@@ -44,16 +55,74 @@ features:
     methods: {
       getTime(){
         this.time = moment().format('YYYY年MM月DD日 HH:mm:ss')
-      }
+      },
+      go(item) {
+          location.href = item.path
+      },
     },
     mounted() {
       this.timer = setInterval(this.getTime, 1000);
     },
      beforeDestroy() {
       clearInterval(this.timer);
-    }
+    },
+    computed: {
+        list () {
+          let res = this.$site.pages
+            .filter(item => item.regularPath.indexOf(".html") !== -1) //只显示内容页，不显示栏目首页
+            .sort((a, b) => {
+              const av = a.frontmatter.updateTime ? new Date(a.frontmatter.updateTime).valueOf() : 0
+              const bv = b.frontmatter.updateTime ? new Date(b.frontmatter.updateTime).valueOf() : 0
+              return bv - av //模糊比较，倒序排列，此处未对非预期日期格式作兼容处理
+            })
+            .filter((item, index) => index < 15) //显示最新15条
+            .map(item => {
+              item.dir = '/' + item.path.split('/')[1] + '/'
+              return item
+            })
+            console.log(res)
+          return res
+        },
+
+        //栏目数组
+        nav () {
+          const n = this.$site.themeConfig.sidebar
+          let res = {}
+          for(let key in n) {
+              res[key] = n[key][0].title
+          }
+          console.log('::::',n)
+          return res
+        }
+    },
+
     
 };
 </script>
 
-
+<style>
+  .text {
+    font-size: 14px;
+  }
+  .item {
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+  }
+  .item:hover {
+    background: #f5f6f7;
+    color:#2a8ff7;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+  .box-card {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+</style>

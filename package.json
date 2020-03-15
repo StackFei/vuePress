@@ -19,6 +19,8 @@
     "@vuepress/plugin-google-analytics": "^1.2.0"
   },
   "dependencies": {
+    "@vssue/api-github-v3": "^1.4.0",
+    "@vssue/vuepress-plugin-vssue": "^1.4.2",
     "element-ui": "^2.13.0",
     "moment": "^2.24.0"
   }

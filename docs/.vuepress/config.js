@@ -12,12 +12,17 @@ module.exports = {
   // base: "/StackFei/", // 这是部署到github相关的配置
   markdown: {
     // lineNumbers: true // 代码块显示行号
+    // toc: { includeLevel: [2, 3] },  // MarkDown 文档中，用 [[toc]] 标签建立目录时，收集哪几级标题
+    extractHeaders: ['h2', 'h3'],   // MarkDown 文档中，对于哪几级标题建立搜索索引
   },
   // 顶部导航栏
   themeConfig: {
     sidebarDepth: 1, // e'b将同时提取markdown中h2 和 h3 标题，显示在侧边栏上。
     lastUpdated: "最后更新时间", // 文档更新时间：每个文件git最后提交的时间,
     smoothScroll: true, //页面滚动效果。
+    editLinks: true, // 启用快速编辑的链接，显示在文章末尾的左下角
+    // 自定义编辑链接的文本。默认是 "Edit this page"
+    editLinkText: '帮助我们改进页面内容！',
     // 顶部导航栏
     nav: navConf,
     sidebar: {

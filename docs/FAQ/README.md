@@ -319,3 +319,5 @@ Array.from(str).reverse()
 
 归根到底, 汉字编码问题
 ```
+
+<Vssue title="Vssue Demo" :options="{ locale: 'zh' }"/>
