@@ -38,33 +38,18 @@ features:
     </div>
   </el-card>
   <div class="footer">
-    <i class="el-icon-time"></i>  {{time}}
+    <el-divider>
+      <el-link :underline="false" href="http://www.beian.miit.gov.cn/" type="primary">鄂ICP备20003283号-1	</el-link>
+    </el-divider>
   </div>
 </template>
 
 <script>
-  import moment from 'moment'
-  moment.locale('zh-cn')
   export default {
-    data() {
-      return {
-        timer: null,
-        time: moment().format('YYYY年MM月DD日 HH:mm:ss')
-      };
-    },
     methods: {
-      getTime(){
-        this.time = moment().format('YYYY年MM月DD日 HH:mm:ss')
-      },
       go(item) {
           location.href = item.path
       },
-    },
-    mounted() {
-      this.timer = setInterval(this.getTime, 1000);
-    },
-     beforeDestroy() {
-      clearInterval(this.timer);
     },
     computed: {
         list () {
@@ -80,7 +65,7 @@ features:
               item.dir = '/' + item.path.split('/')[1] + '/'
               return item
             })
-            console.log(res)
+            // console.log(res)
           return res
         },
 
@@ -91,7 +76,7 @@ features:
           for(let key in n) {
               res[key] = n[key][0].title
           }
-          console.log('::::',n)
+          // console.log('::::',n)
           return res
         }
     },

@@ -11,6 +11,7 @@
 <el-divider content-position="left">零散点</el-divider>
 
   - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;继承问题](#j1)
+  - [<i class="el-icon-paperclip"></i>&nbsp;&nbsp;&nbsp;发布订阅/观察者](#j2)
 
 <el-divider content-position="left">Polyfill</el-divider>
 
@@ -22,6 +23,7 @@
 
 <div id="j1"></div>
 
+- 继承问题
 ```js
 function Person (money) {this.money = money}
 Person.prototype.getMoney = () => console.log(this.money)
@@ -41,7 +43,59 @@ Son.prototype = Object.create(Person.prototype, {
 const son = new Son(1000)
 console.log(son instanceof Son);
 console.log(son instanceof Person);
+```
 
+<div id="j2"></div>
+
+- 发布订阅/观察者
+```js
+const fs = require('fs')
+// 发布订阅
+const event = {
+  arr: [],
+  on(fn) { this.arr.push(fn) },
+  emit() { this.arr.forEach(f => f()) }
+}
+const obj = {};
+e.on(() => console.log('订阅'))
+e.on(() => Object.keys(obj).length === 2, console.log('over'))
+
+fs.readFile('.', (e, d) => obj['0'] = d, e.emit())
+fs.readFile('.', (e, d) => obj['1'] = d, e.emit())
+// 订阅  订阅  订阅  over
+
+// 观察者
+class Sub {
+  constructor(name) {
+    this.name = name;
+    this.arr = [];
+    this.status = false
+  }
+  attach = (target) => this.arr.push(target)
+  setStatus =
+    (newValue) =>
+      (
+        this.status = newValue,
+        this.arr.forEach(f => f.up(newValue))
+      )
+}
+
+class Obe {
+  constructor(name) {
+    this.name = name
+  }
+  up(v) {
+    console.log(this.name, '知道了改变成了', v)
+  }
+}
+
+const s1 = new Sub('憨憨');
+const o1 = new Obe('憨憨一号');
+const o2 = new Obe('憨憨二号');
+s1.attach(o1)
+s1.attach(o2)
+s1.setStatus(true)
+// 憨憨一号知道了改变成了true   憨憨二号知道了改变成了true
 ```
 
 ## Polyfill
