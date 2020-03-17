@@ -36,6 +36,7 @@ module.exports = {
             ["/FAQ/ES/clone", "🚙浅析克隆"],
             ["/FAQ/ES/promise", "🚗promise"],
             ["/FAQ/ES/react-window", "🚕长列表"],
+            ["/FAQ/ES/simple-webpack", "🚌webpack配置篇"],
           ]
         },
         {
