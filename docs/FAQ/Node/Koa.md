@@ -130,5 +130,5 @@ class myKoa extends EventEmit{
     }
 ```
 ## 洋葱模型核心思路
-![koa执行机制](../../.vuepress/public/Node/img/koa1.png)
+![koa执行机制](http://static.pengyunfei.top/image/Node/koa1.png)
 以上便是个人学习的拙见

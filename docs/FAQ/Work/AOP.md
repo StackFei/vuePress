@@ -11,11 +11,11 @@ tags:
 
 - 农场的水果包装流水线一开始只有 `采摘 - 清洗 - 贴标签`
 
-![work日常工作](../../.vuepress/public/Work/img/work9.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work9.png)
 
 - 为了提高销量，想加上两道工序 `分类` 和 `包装` 但又不能干扰原有的流程，同时如果没增加收益可以随时撤销新增工序。
 
-![work日常工作](../../.vuepress/public/Work/img/work10.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work10.png)
 
 - 最后在流水线的中的空隙插上两个工人去处理，形成`采摘 - 分类 - 清洗 - 包装 - 贴标签` 的新流程，而且工人可以随时撤回。
 
@@ -75,7 +75,7 @@ newWork();
 ```
 这场景，典型的`HOC`没错了，既有函数作为参数，又有函数作为返回值，但不会立马执行该函数。这里也涉及到js基础，在原型链上扩展方法，真实开发可别这么做，还是在特定的函数上扩展，避免污染全局。需要值得注意的是`this`指向的问题，涉及到词法作用域`newWork()`执行时的上下文指向问题，尤其是浏览器`window`与node的`global`，使得全局指向也较为模糊，无法判断。这里使用`_this`保存上下文的指向，原理是作用域得以保存，使得这里的`this`得以保存，内部能访问外部的变量`this`。或者也可以将其换为`() => {}` 没有`arguments - this`便可以直接`this()`调用了。看效果图。
 
-![work日常工作](../../.vuepress/public/Work/img/work11.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work11.png)
 
 接下来就可以尝试在尾部添加`after`功能，大体其实也没有做多大改动。看实例代码.
 ```javascript
@@ -108,7 +108,7 @@ newWork1();
 ```
 看的出来无非就是在原型链上多扩展的方法。当然这只是乞丐版的，并没有考虑过其他情况，一切都只是以复原`AOP`思路为主。真实情况，可不能这样编码,效果图
 
-![work日常工作](../../.vuepress/public/Work/img/work12.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work12.png)
 
 当然，也是支持传参，实例化的时候将参数携带会原型链上的方法，赋值给扩展的实例方法。这里需要注意的是，如果你是使用函数式的写法是可以使用`arguments` 可以直接将参数拿出，如果使用的是`() => {}` ，没有该参数，也可以使用`rest`这个API将参数延展出来。这里小编偷懒就是用`...`拿参数了。
 ```javascript
@@ -138,12 +138,12 @@ console.log(arr)
 ```
 这里的`this`稍微有点绕，需要牢记的是，`this`要指向原型链上，由于`myPush`上没有`oldPush`,所以调用自己写的`myPush`时需要将指向通过`call`值向到原始数组`oldPush`上，并将后续的参数传入。并且在自己的`myPush`中不能直接调用老的方法，这样`this`会默认指向`window`,也需要通过相同的方法，调整`this`指向。所以无论调用哪个地方的`call`，`this`指向永远不会混乱永远都是指向原始数组，看效果。
 
-![work日常工作](../../.vuepress/public/Work/img/work13.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work13.png)
 
 ## AOP扩展场景
 既然`AOP`的应用场景如此广泛，Vue中使用，React中势必也会使用，接下里就做一个小的扩展，`React v16.3`之后新增的`hooks`属性中的`useState`便是采用这种切片方式来处理事件。
 
-![work日常工作](../../.vuepress/public/Work/img/work14.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work14.png)
 
 执行机制，有点类似洋葱模型有不有，从开始执行`perform`到结束`maintained`，中间会执行一系列方法，可以有N个`wrapper`来包裹执行的方法，有`initialize`过度到`close`，现将所有的请求头执行完，在依次将请求头执行关闭。明确一点，`perform`无疑是一个高阶函数，接受多个`wrapper`、以及任意`anyMethod`作为参数，并且返回多个可执行顺序函数。将其映射到代码模型上。
 ```javascript
@@ -174,7 +174,7 @@ perform(function () {
     }
 ])
 ```
-![work日常工作](../../.vuepress/public/Work/img/work15.png)
+![work日常工作](http://static.pengyunfei.top/image/Work/work15.png)
 
 当然想将其变为高阶函数，延迟执行，也只需将执行的结果用函数返回即可。
 ```javascript

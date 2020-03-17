@@ -42,7 +42,7 @@ const App = () => {
 ``` 
 使用方法简单粗暴，简单介绍一下，`useState` 第一个参数为初始值，第二个参数为操作初始值的方法，不传入的话默认为一个空数组，由其解构出来，如果有初始值，可以直接将其注入到 `useState("初始值")` 中，将事件直接绑定到元素之上，也是比较恶心的一件事，但函数式有没有生命周期来执行事件，岂不是很尴尬，接下来的一个钩子函数就能解决这个问题，自带生命周期。
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks1.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks1.gif)
 
 ### useEffect
 语义化函数，副作用。传统开发中函数式组件，充当展示组件，不想类组件拥有自己的生命周期这一说法，既然要用函数式开发，又不能没有生命周期，`useEffect` 就是来充当这一角色。可以结合 `useState` 来完成整个页面从初始化到数据改变的过程。
@@ -98,7 +98,7 @@ const App = () => {
 ```
 可以看出， `useCallback` 与 `useEffect` 的用法有异曲同工之妙，几乎可以说是一毛一样，两个相同逻辑的方法，封装到一个 `callback` 回调中，某一个值发生改变即可触发执行事件。
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks2.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks2.gif)
 
 ### useRef
 `useRef` 有点类似于 类组件中的 `createRef` 接收一个初始值，返回一个对象通过current获取到当前对象，并保存节点当前状态,且保存的变量不会随着数据的变化而重新生成，保持最后一次赋值状态。其功能配合上 `useCabllback`, `useEffect`,完美实现 `preProps/preState` 的功能。
@@ -120,7 +120,7 @@ useEffect(() => {
   }
 });
 ```
-![hooks钩子函数](../../.vuepress/public/React/img/hooks3.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks3.gif)
 
 ### useMemo
 Memo 为 Memory 简写，`useMemo` 即使用记忆的内容。主要用于优化性能这块。就像前面所说 `useEffect` 没有设置第二个参数关联状态，每次都会触发。同样通过计算出来的值或者组件状态也都会重新计算/挂载，即使状态并没有发生改变。
@@ -148,7 +148,7 @@ export default function HookDemo() {
 ```
 参数与 `useEffect` 等钩子函数无差别
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks4.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks4.gif)
 
 初次了解可能只会觉得 `useMemo` 用来做计算缓存，返回值无非是数字类型或者字符串类型。其实，并不关心返回值类型，`useMemo` 内部只接受状态值，依据状态值返回另一个状态。简称 `雨我无瓜`。今天就先讲到这，下节再继续。
 
@@ -216,7 +216,7 @@ const App = () => {
 大功告成；解释一下，先定义属于自己的 `hooks` 函数 `useTimer` 用来计算倒计时，给他默认两属性用来记录开始倒计时、倒计时间，用 `useEffect` 来运行倒计时减少，当然条件是倒计时 `running` 正在运行 ，记得清除倒计时
 的副作用在 `useEffect` 第二个参数，对外暴露，开始 `start`, 结束 `stop`, 重置 `reset` 的方法，用来控制倒计时。用法也极为简单。效果如下，算得上是入门级别的demo
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks5.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks5.gif)
 
 ### 编写自己的Hooks组件 <Badge text="基本类型hooks" />
 当然仅仅倒计时并不能满足我们的好奇心，接下来干一个稍微复杂一点的，其实也不能算是复杂，只是将增加、减少、重置结合起来，功能虽增多，却也只是换汤不换药
@@ -256,7 +256,7 @@ export const myHooksView  = () =>{
 ```
 用法类似，就不做过多介绍。
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks6.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks6.gif)
 
 ### 编写自己的Hooks组件 <Badge text="DOM类型hooks" />
 翻完逻辑数值类型的 `hooks` 自定义组件这座山，就见到大海了？ 答案是 `NO` ,可不止是这点功能呢，还能自定义返回DOM节点的钩子函数，没想到吧。借用一下 `antd` 的库来操作以 Modal举例
@@ -294,7 +294,7 @@ export const HookDemo = () => {
 ```
 写法、用法其实和之前的没啥区别，无非就是将值得改变映射到DOM节点上，然后整体返回，符合函数式编程，组件化思路。
 
-![hooks钩子函数](../../.vuepress/public/React/img/hooks7.gif)
+![hooks钩子函数](http://static.pengyunfei.top/image/React/hooks7.gif)
 
 ## 手搓Hooks
 <Badge text="待更新......" />

@@ -64,7 +64,7 @@ function createElement(type, props, children) {
 ```
 此时的虚拟dom已经创建出来，不出所料会是一个`html`节点对象,回到`index.js`将其打印出来瞅瞅,
 
-![react虚拟dom](../../.vuepress/public/React/img/react1.png)
+![react虚拟dom](http://static.pengyunfei.top/image/React/react1.png)
 
 是他没错了，`type`代表类型,`prop`代表传入的各种属性,比如`class`，`id`啥的,`children`代表其子元素，或者文本元素,单光是这样是不够的，无法在浏览器中显示，这时候就需要`render`函数来转换节点了,回到`element.js`
 ```javascript
@@ -82,7 +82,7 @@ function render(eleObj) {
 ```
 解释一下,结构一目了然，创建传入的节点元素属性并创建出来，可能`children`存在多层，ok，遍历。当然`children`也可能不是`dom`节点，可能只是单纯的文字元素,这时候就需要做一点容错。当然创建节点不止如此，还要给节点添加传入的各种属性，这点稍后会说到。这时候，再回到`index.js`将其打印出来瞅瞅,看看dom节点长啥样
 
-![react虚拟dom](../../.vuepress/public/React/img/react2.png)
+![react虚拟dom](http://static.pengyunfei.top/image/React/react2.png)
 
 唉，有点样子了!但是总感觉少点什么，没错，得把属性加上去啊前端可就是靠样式吃饭的。那咱就写一个添加属性的方法上去，先明确需求，属性在普通标签`div`等等等可以直接添加上去比如`style`,`class`，但`input`，等文本标签的属性`value`等啊，就得另做处理。
 ```javascript
@@ -115,7 +115,7 @@ function setAttr(node, key, value) {
 ```
 分析功能，在创建完节点之后，咱们循环给节点添加属性，穿入当前元素`el`,当前第多少个要添加`key`，以及当前第多少个要添加的属性值`value`,掠一下，其实也不是很难,这里设置节点的时候，得用`switch`来穿透循环多个，可能有的节点同时拥有`style`,`class`等多个属性,最容易被忽略掉的就是输入框，他的属性值`value`容易被写掉，所以得专门抽出来，再来`index.js`看看打印结果
 
-![react虚拟dom](../../.vuepress/public/React/img/react3.png)
+![react虚拟dom](http://static.pengyunfei.top/image/React/react3.png)
 
 有点雏形了，接下来是最为重要的一步之一，将`dom`元素，挂载到`html`文档中，这个相对而言，就简单很多了直接上代码,看结果。当然你得在html文档中有一个可挂载的节点，并且`id`为`root`才行
 ```javascript
@@ -130,7 +130,7 @@ let el = render(VertualDom)
 renderDom(el, window.root)
 ```
 
-![react虚拟dom](../../.vuepress/public/React/img/react4.png)
+![react虚拟dom](http://static.pengyunfei.top/image/React/react4.png)
 
 感觉离成功又近了一步，有没有，当然代码却不止如此，要不那多磕碜。
 
@@ -271,7 +271,7 @@ let patchs = diff(VertualDom, VertualDom2)
 console.log(patchs)
 ```
 
-![react虚拟dom](../../.vuepress/public/React/img/react5.png)
+![react虚拟dom](http://static.pengyunfei.top/image/React/react5.png)
 
 ## element替换节点的工匠patch
 
