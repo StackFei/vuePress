@@ -1,6 +1,6 @@
 module.exports = {
     '@vuepress/google-analytics': {
-        'ga': 'UA-153661144-1'
+        'ga': 'UA-160864442-2'
     },
     '@vssue/vuepress-plugin-vssue': {
       // 设置 `platform` 而不是 `api`
